@@ -10,8 +10,9 @@ import {
   Icon,
 } from "@ui-kitten/components";
 
-import { HomeScreen } from "src/screens/Home/index";
+import { HomeScreen } from "src/screens/Home";
 import { SearchScreen } from "src/screens/Search/index";
+import { DownloadsScreen } from "src/screens/Downloads";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -49,7 +50,7 @@ const TabNavigator = () => (
     <Screen name="Home" component={HomeScreen} />
     <Screen name="Buscar" component={SearchScreen} />
     <Screen name="Para Criadores" component={OrdersScreen} />
-    <Screen name="Biblioteca" component={UsersScreen} />
+    <Screen name="Biblioteca" component={DownloadsScreen} />
   </Navigator>
 );
 
