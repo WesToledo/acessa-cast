@@ -1,15 +1,26 @@
 import React from "react";
-import { StyleSheet, Image, ScrollView, View, Dimensions } from "react-native";
-import { Layout, Text } from "@ui-kitten/components";
+import {
+  StyleSheet,
+  Image,
+  View,
+  Dimensions,
+  TouchableHighlight,
+} from "react-native";
+import { Layout, Text, Divider } from "@ui-kitten/components";
 
 import img from "../../../assets/thumb.jpg";
 
-var width = Dimensions.get("window").width; 
+var width = Dimensions.get("window").width;
 
 export const Card = ({ navigation, name, description, imageSource }) => {
   return (
-    <Layout style={styles.container}>
-      <View style={styles.card_container}>
+    <TouchableHighlight
+      style={styles.container}
+      activeOpacity={0.6}
+      underlayColor="#DDDDDD"
+      onPress={() => console.log("touch")}
+    >
+      <>
         <Image source={img} style={styles.thumb} />
         <View>
           <Text numberOfLines={3} style={styles.thumb_text} category="s1">
@@ -24,26 +35,18 @@ export const Card = ({ navigation, name, description, imageSource }) => {
             {description}
           </Text>
         </View>
-      </View>
-    </Layout>
+      </>
+    </TouchableHighlight>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 15,
     height: "auto",
-    paddingVertical: 10,
-  },
-  title: {
-    paddingTop: 15,
-    fontWeight: "bold",
-  },
-  card_container: {
+    marginVertical: 5,
     flex: 1,
     flexDirection: "row",
-    width: "100%",
-    backgroundColor: "#ccc",
+    zIndex: 1000,
   },
   thumb: {
     width: 90,

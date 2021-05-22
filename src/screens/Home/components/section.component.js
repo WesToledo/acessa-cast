@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Image, ScrollView, View } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  ScrollView,
+  View,
+  TouchableHighlight,
+} from "react-native";
 import { Layout, Text } from "@ui-kitten/components";
 
 import img from "../../../assets/thumb.jpg";
@@ -12,9 +18,17 @@ export const Section = ({ navigation, title, podcasts }) => {
       </Text>
 
       <ScrollView horizontal={true} style={styles.cards}>
-        {podcasts.map((podcast) => (
-          <View>
-            <Image source={img} style={styles.thumb} />
+        {podcasts.map((podcast, index) => (
+          <View key={index}>
+            <TouchableHighlight
+              key={index}
+              style={{ width: 120, marginRight: 10 }}
+              activeOpacity={0.6}
+              underlayColor="#DDDDDD"
+              onPress={() => console.log("touch")}
+            >
+              <Image source={img} style={styles.thumb} />
+            </TouchableHighlight>
             <Text numberOfLines={2} style={styles.thumb_text} category="s2">
               NerdCast #200 - Agora já é tarde asdasd
             </Text>

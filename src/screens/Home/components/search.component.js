@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Icon, Text, Input } from "@ui-kitten/components";
 
 const SearchIcon = (props) => <Icon {...props} name="search-outline" />;
