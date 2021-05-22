@@ -10,13 +10,15 @@ import {
   Icon,
 } from "@ui-kitten/components";
 
+import { HomeScreen } from "src/screens/Home/index";
+import { SearchScreen } from "src/screens/Search/index";
+
 const { Navigator, Screen } = createBottomTabNavigator();
 
 const PersonIcon = (props) => <Icon {...props} name="person-outline" />;
-
-const BellIcon = (props) => <Icon {...props} name="bell-outline" />;
-
-const EmailIcon = (props) => <Icon {...props} name="email-outline" />;
+const SearchIcon = (props) => <Icon {...props} name="search-outline" />;
+const BulbIcon = (props) => <Icon {...props} name="bulb-outline" />;
+const CloudIcon = (props) => <Icon {...props} name="cloud-download-outline" />;
 
 const UsersScreen = () => (
   <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -36,16 +38,18 @@ const BottomTabBar = ({ navigation, state }) => (
     onSelect={(index) => navigation.navigate(state.routeNames[index])}
   >
     <BottomNavigationTab title="Home" icon={PersonIcon} />
-    <BottomNavigationTab title="Avaliações Físicas" icon={BellIcon} />
-    <BottomNavigationTab title="Order" icon={EmailIcon} />
+    <BottomNavigationTab title="Buscar" icon={SearchIcon} />
+    <BottomNavigationTab title="Para Criadores" icon={BulbIcon} />
+    <BottomNavigationTab title="Biblioteca" icon={CloudIcon} />
   </BottomNavigation>
 );
 
 const TabNavigator = () => (
   <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
-    <Screen name="Users" component={UsersScreen} />
-    <Screen name="Orders" component={OrdersScreen} />
-    <Screen name="Email" component={UsersScreen} />
+    <Screen name="Home" component={HomeScreen} />
+    <Screen name="Buscar" component={SearchScreen} />
+    <Screen name="Para Criadores" component={OrdersScreen} />
+    <Screen name="Biblioteca" component={UsersScreen} />
   </Navigator>
 );
 
