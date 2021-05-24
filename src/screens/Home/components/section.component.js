@@ -6,11 +6,13 @@ import {
   View,
   TouchableHighlight,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Layout, Text } from "@ui-kitten/components";
 
 import img from "../../../assets/thumb.jpg";
 
-export const Section = ({ navigation, title, podcasts }) => {
+export const Section = ({ title, podcasts }) => {
+  const navigation = useNavigation();
   return (
     <Layout style={styles.container}>
       <Text category="h4" style={styles.title}>
@@ -25,7 +27,7 @@ export const Section = ({ navigation, title, podcasts }) => {
               style={{ width: 120, marginRight: 10 }}
               activeOpacity={0.6}
               underlayColor="#DDDDDD"
-              onPress={() => console.log("touch")}
+              onPress={() => navigation.navigate("Details")}
             >
               <Image source={img} style={styles.thumb} />
             </TouchableHighlight>

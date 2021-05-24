@@ -1,7 +1,8 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import {
   BottomNavigation,
   BottomNavigationTab,
@@ -14,8 +15,10 @@ import { HomeScreen } from "src/screens/Home";
 import { SearchScreen } from "src/screens/Search/index";
 import { DownloadsScreen } from "src/screens/Downloads";
 import { ProfileScreen } from "screens/Profile/index";
+import { DetailsScreen } from "screens/Details/index";
 
 const { Navigator, Screen } = createBottomTabNavigator();
+const RootStack = createStackNavigator();
 
 const HomeIcon = (props) => <Icon {...props} name="home-outline" />;
 const SearchIcon = (props) => <Icon {...props} name="search-outline" />;
@@ -28,6 +31,15 @@ const OrdersScreen = () => (
     <Text category="h1">ORDERS</Text>
   </Layout>
 );
+
+function ModalScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+      <Button onPress={() => navigation.goBack()} title="Dismiss" />
+    </View>
+  );
+}
 
 const BottomTabBar = ({ navigation, state }) => (
   <BottomNavigation
@@ -45,21 +57,40 @@ const BottomTabBar = ({ navigation, state }) => (
 const TabNavigator = () => (
   <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
     <Screen name="Home" component={HomeScreen} />
-    <Screen name="Buscar" component={SearchScreen} />
-    <Screen name="Para Criadores" component={OrdersScreen} />
+    <Screen name="Search" component={SearchScreen} />
+    <Screen name="Creators" component={OrdersScreen} />
     <Screen name="Downloads" component={DownloadsScreen} />
-    <Screen name="Perfil" component={ProfileScreen} />
+    <Screen name="Profile" component={ProfileScreen} />
+    {/* <Screen name="Orders" component={OrdersScreen} /> */}
   </Navigator>
 );
 
 export const AppNavigator = () => (
   <NavigationContainer>
-    <TabNavigator />
+    <RootStackScreen />
   </NavigationContainer>
 );
 
-const styles = StyleSheet.create({
-  bottomNavigation: {
-    marginVertical: 8,
-  },
-});
+function RootStackScreen() {
+  return (
+    <RootStack.Navigator
+      mode="modal"
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <RootStack.Screen
+        name="Main"
+        component={TabNavigator}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name="Details"
+        component={DetailsScreen}
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
+    </RootStack.Navigator>
+  );
+}
