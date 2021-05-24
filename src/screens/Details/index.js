@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  Image,
-  View,
-  Dimensions,
-  TouchableHighlight,
-} from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
 import { Layout, Text } from "@ui-kitten/components";
 

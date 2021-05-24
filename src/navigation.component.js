@@ -56,15 +56,10 @@ const TabNavigator = () => (
       <Screen name="Creators" component={OrdersScreen} />
       <Screen name="Downloads" component={DownloadsScreen} />
       <Screen name="Profile" component={ProfileScreen} />
+      <Screen name="AlbumDetails" component={AlbumDetailsScreen} />
       {/* <Screen name="Orders" component={OrdersScreen} /> */}
     </Navigator>
   </>
-);
-
-export const AppNavigator = () => (
-  <NavigationContainer>
-    <RootStackScreen />
-  </NavigationContainer>
 );
 
 function RootStackScreen() {
@@ -88,15 +83,14 @@ function RootStackScreen() {
           headerShown: false,
         }}
       />
-      <RootStack.Screen
-        name="AlbumDetails"
-        component={AlbumDetailsScreen}
-        screenOptions={{
-          headerShown: false,
-        }}
-      />
 
       {/* AlbumDetails */}
     </RootStack.Navigator>
   );
 }
+
+export const AppNavigator = () => (
+  <NavigationContainer>
+    <RootStackScreen />
+  </NavigationContainer>
+);
