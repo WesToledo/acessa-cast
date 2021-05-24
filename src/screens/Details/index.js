@@ -16,7 +16,7 @@ import { PlayBackControls } from "./playback.component";
 import { AlbumArt } from "./albumart.component";
 import { TrackDetails } from "./trackdetails.component";
 
-export const DetailsScreen = ({ navigation }) => {
+export const TrackDetailsScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <Layout style={styles.container}>

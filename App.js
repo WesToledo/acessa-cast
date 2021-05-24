@@ -4,7 +4,6 @@ import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 import { default as theme } from "./custom-theme.json";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import { AppNavigator } from "src/navigation.component";
-import { SafeAreaView } from "react-native";
 
 export default () => (
   <>

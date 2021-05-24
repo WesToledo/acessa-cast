@@ -11,11 +11,13 @@ import {
   Icon,
 } from "@ui-kitten/components";
 
-import { HomeScreen } from "src/screens/Home";
-import { SearchScreen } from "src/screens/Search/index";
-import { DownloadsScreen } from "src/screens/Downloads";
-import { ProfileScreen } from "screens/Profile/index";
-import { DetailsScreen } from "screens/Details/index";
+import { HomeScreen } from "screens/Home";
+import { SearchScreen } from "screens/Search";
+import { DownloadsScreen } from "screens/Downloads";
+import { ProfileScreen } from "screens/Profile";
+import { TrackDetailsScreen } from "src/screens/Details";
+import { TrackPlayer } from "src/screens/TrackBottomPlayer/index";
+import { AlbumDetailsScreen } from "screens/AlbumDetails";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -32,15 +34,6 @@ const OrdersScreen = () => (
   </Layout>
 );
 
-function ModalScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 30 }}>This is a modal!</Text>
-      <Button onPress={() => navigation.goBack()} title="Dismiss" />
-    </View>
-  );
-}
-
 const BottomTabBar = ({ navigation, state }) => (
   <BottomNavigation
     selectedIndex={state.index}
@@ -55,14 +48,17 @@ const BottomTabBar = ({ navigation, state }) => (
 );
 
 const TabNavigator = () => (
-  <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
-    <Screen name="Home" component={HomeScreen} />
-    <Screen name="Search" component={SearchScreen} />
-    <Screen name="Creators" component={OrdersScreen} />
-    <Screen name="Downloads" component={DownloadsScreen} />
-    <Screen name="Profile" component={ProfileScreen} />
-    {/* <Screen name="Orders" component={OrdersScreen} /> */}
-  </Navigator>
+  <>
+    <TrackPlayer />
+    <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
+      <Screen name="Home" component={HomeScreen} />
+      <Screen name="Search" component={SearchScreen} />
+      <Screen name="Creators" component={OrdersScreen} />
+      <Screen name="Downloads" component={DownloadsScreen} />
+      <Screen name="Profile" component={ProfileScreen} />
+      {/* <Screen name="Orders" component={OrdersScreen} /> */}
+    </Navigator>
+  </>
 );
 
 export const AppNavigator = () => (
@@ -84,13 +80,23 @@ function RootStackScreen() {
         component={TabNavigator}
         options={{ headerShown: false }}
       />
+
       <RootStack.Screen
         name="Details"
-        component={DetailsScreen}
+        component={TrackDetailsScreen}
         screenOptions={{
           headerShown: false,
         }}
       />
+      <RootStack.Screen
+        name="AlbumDetails"
+        component={AlbumDetailsScreen}
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
+
+      {/* AlbumDetails */}
     </RootStack.Navigator>
   );
 }

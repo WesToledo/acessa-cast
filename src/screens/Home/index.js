@@ -8,7 +8,8 @@ export const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Layout style={{ flex: 1 }}>
-        <ScrollView>
+        {/* Se trackplayer estiver aberto, dar espaçamento de 70  */}
+        <ScrollView style={{ marginBottom: 70 }}>
           <TopNavigation title="MyApp" alignment="center" />
 
           <Section title="Top Podcasts" podcasts={[1, 2, 3, 4, 5, 6]} />

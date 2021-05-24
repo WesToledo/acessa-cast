@@ -27,7 +27,7 @@ export const Section = ({ title, podcasts }) => {
               style={{ width: 120, marginRight: 10 }}
               activeOpacity={0.6}
               underlayColor="#DDDDDD"
-              onPress={() => navigation.navigate("Details")}
+              onPress={() => navigation.navigate("AlbumDetails")}
             >
               <Image source={img} style={styles.thumb} />
             </TouchableHighlight>
