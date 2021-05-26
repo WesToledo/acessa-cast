@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
 import { Layout, Text } from "@ui-kitten/components";
+
+import api from "src/services/api";
 
 import { SeekBar } from "./seekbar.component";
 import { Header } from "./header.component";
@@ -9,7 +11,20 @@ import { PlayBackControls } from "./playback.component";
 import { AlbumArt } from "./albumart.component";
 import { TrackDetails } from "./trackdetails.component";
 
-export const TrackDetailsScreen = ({ navigation }) => {
+export function TrackDetailsScreen({ navigation }) {
+  async function getTrack() {
+    try {
+      const response = await api.get("user/");
+      console.log(response.data);
+    } catch (err) {
+      console.log("error", err);
+    }
+  }
+
+  useEffect(() => {
+    getTrack();
+  }, []);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Layout style={styles.container}>
@@ -23,7 +38,7 @@ export const TrackDetailsScreen = ({ navigation }) => {
       </Layout>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   safeArea: {
