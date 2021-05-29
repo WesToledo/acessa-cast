@@ -1,0 +1,153 @@
+import React from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  TouchableWithoutFeedback,
+  Image,
+  Dimensions,
+  KeyboardAvoidingView,
+} from "react-native";
+import {
+  Button,
+  Divider,
+  Layout,
+  Text,
+  Input,
+  Icon,
+} from "@ui-kitten/components";
+
+const AlertIcon = (props) => <Icon {...props} name="alert-circle-outline" />;
+
+const avatarImg = require("src/assets/thumb.jpg");
+
+var width = Dimensions.get("window").width;
+
+export const LoginScreen = ({ navigation }) => {
+  const [form, setForm] = React.useState({
+    email: null,
+    password: null,
+  });
+  const [secureTextEntry, setSecureTextEntry] = React.useState(true);
+
+  const toggleSecureEntry = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
+
+  const renderIcon = (props) => (
+    <TouchableWithoutFeedback onPress={toggleSecureEntry}>
+      <Icon {...props} name={secureTextEntry ? "eye-off" : "eye"} />
+    </TouchableWithoutFeedback>
+  );
+
+  const renderCaption = () => {
+    return (
+      <View style={styles.captionContainer}>
+        {AlertIcon(styles.captionIcon)}
+        <Text style={styles.captionText}>
+          Deve conter pelo menos 8 caracteres
+        </Text>
+      </View>
+    );
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <Layout style={styles.container}>
+        <KeyboardAvoidingView behavior="height" style={styles.content}>
+          <View style={styles.header}>
+            <Image source={avatarImg} style={styles.avatar} />
+            <Text category="h4" style={styles.text}>
+              Acessa Cast
+            </Text>
+          </View>
+          <View style={styles.form}>
+            <Input
+              style={styles.input}
+              value={form.email}
+              label="Email"
+              placeholder="Digite seu email"
+              onChangeText={(nextValue) =>
+                setForm({ ...form, email: nextValue })
+              }
+            />
+            <Input
+              style={styles.input}
+              value={form.password}
+              label="Senha"
+              placeholder="Digite sua senha"
+              caption={renderCaption}
+              accessoryRight={renderIcon}
+              secureTextEntry={secureTextEntry}
+              onChangeText={(nextValue) =>
+                setForm({ ...form, password: nextValue })
+              }
+            />
+            <Button style={styles.button} size="medium">
+              Entrar
+            </Button>
+          </View>
+        </KeyboardAvoidingView>
+      </Layout>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#1F2876",
+  },
+  text: {
+    padding: 10,
+    fontWeight: "bold",
+  },
+  content: {
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    width: "90%",
+    height: "45%",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  header: {
+    height: "1%",
+    alignItems: "center",
+    marginBottom: "5%",
+  },
+  avatar: {
+    width: width * 0.3,
+    height: width * 0.3,
+    marginTop: "-20%",
+    borderRadius: 100,
+  },
+  captionContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  captionIcon: {
+    width: 10,
+    height: 10,
+    marginRight: 5,
+  },
+  captionText: {
+    fontSize: 12,
+    fontWeight: "400",
+    color: "#8F9BB3",
+  },
+  form: {
+    marginTop: 40,
+    padding: 15,
+    width: "100%",
+  },
+  input: {
+    marginVertical: 8,
+  },
+  button: {
+    marginTop: 15,
+    // marginBottom: 15,
+  },
+});
