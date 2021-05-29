@@ -16,6 +16,7 @@ import {
   Input,
   Icon,
 } from "@ui-kitten/components";
+import { useEffect } from "react/cjs/react.development";
 
 const AlertIcon = (props) => <Icon {...props} name="alert-circle-outline" />;
 
@@ -23,7 +24,7 @@ const avatarImg = require("src/assets/thumb.jpg");
 
 var width = Dimensions.get("window").width;
 
-export const LoginScreen = ({ navigation }) => {
+export const SignInScreen = ({ navigation }) => {
   const [form, setForm] = React.useState({
     email: null,
     password: null,
@@ -83,6 +84,15 @@ export const LoginScreen = ({ navigation }) => {
                 setForm({ ...form, password: nextValue })
               }
             />
+            <Text
+              category="s1"
+              style={styles.singup}
+              onPress={() => {
+                navigation.navigate("SignUp");
+              }}
+            >
+              Novo por aqui? Crie sua conta
+            </Text>
             <Button style={styles.button} size="medium">
               Entrar
             </Button>
@@ -108,7 +118,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 5,
     width: "90%",
-    height: "45%",
     justifyContent: "space-around",
     alignItems: "center",
   },
@@ -145,6 +154,10 @@ const styles = StyleSheet.create({
   },
   input: {
     marginVertical: 8,
+  },
+  singup: {
+    alignSelf: "flex-end",
+    color: "#1F2876",
   },
   button: {
     marginTop: 15,

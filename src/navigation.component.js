@@ -11,7 +11,8 @@ import {
   Icon,
 } from "@ui-kitten/components";
 
-import { LoginScreen } from "screens/Login";
+import { SignInScreen } from "src/screens/SignIn";
+import { SignUpScreen } from "src/screens/SignUp";
 
 import { HomeScreen } from "screens/Home";
 import { SearchScreen } from "screens/Search";
@@ -95,11 +96,16 @@ export const AppNavigator = () => (
   <NavigationContainer>
     <RootStack.Navigator>
       <RootStack.Screen
-        name="Login"
-        component={LoginScreen}
+        name="SignIn"
+        component={SignInScreen}
         options={{
           headerShown: false,
         }}
+      />
+      <RootStack.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={{ title: "" }}
       />
     </RootStack.Navigator>
 
