@@ -27,7 +27,7 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "API_URL": "http://192.168.0.109:3333/api"
+      "SERVER_URL": "https://7b469e6b33e7.ngrok.io"
     }
   }
 }

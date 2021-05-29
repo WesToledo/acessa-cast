@@ -3,7 +3,7 @@ import Constants from "expo-constants";
 // import { getToken } from "./auth";
 
 const api = axios.create({
-  baseURL: Constants.manifest.extra.API_URL,
+  baseURL: Constants.manifest.extra.SERVER_URL + "/api",
 });
 
 api.interceptors.request.use(async (config) => {

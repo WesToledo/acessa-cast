@@ -4,7 +4,7 @@ import { Layout, Icon } from "@ui-kitten/components";
 
 var width = Dimensions.get("window").width;
 
-export function PlayBackControls() {
+export function PlayBackControls({ onPressPlay, onPressPause, isPlaying }) {
   return (
     <Layout style={styles.playback_controls}>
       <TouchableHighlight
@@ -15,18 +15,33 @@ export function PlayBackControls() {
       >
         <Icon style={styles.icon} fill="#0A0A0A" name="rewind-left" />
       </TouchableHighlight>
-      <TouchableHighlight
-        style={styles.icon_container}
-        activeOpacity={0.6}
-        underlayColor="#DDDDDD"
-        onPress={() => console.log("touch")}
-      >
-        <Icon
-          style={{ width: 90, height: 90 }}
-          fill="#0A0A0A"
-          name="play-circle"
-        />
-      </TouchableHighlight>
+      {isPlaying ? (
+        <TouchableHighlight
+          style={styles.icon_container}
+          activeOpacity={0.6}
+          underlayColor="#DDDDDD"
+          onPress={onPressPause}
+        >
+          <Icon
+            style={{ width: 90, height: 90 }}
+            fill="#0A0A0A"
+            name="pause-circle"
+          />
+        </TouchableHighlight>
+      ) : (
+        <TouchableHighlight
+          style={styles.icon_container}
+          activeOpacity={0.6}
+          underlayColor="#DDDDDD"
+          onPress={onPressPlay}
+        >
+          <Icon
+            style={{ width: 90, height: 90 }}
+            fill="#0A0A0A"
+            name="play-circle"
+          />
+        </TouchableHighlight>
+      )}
       <TouchableHighlight
         style={styles.icon_container}
         activeOpacity={0.6}
