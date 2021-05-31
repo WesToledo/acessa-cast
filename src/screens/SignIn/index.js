@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,7 +16,9 @@ import {
   Input,
   Icon,
 } from "@ui-kitten/components";
-import { useEffect } from "react/cjs/react.development";
+import { useDispatch, useSelector } from "react-redux";
+
+import { login } from "src/store/actions/auth";
 
 const AlertIcon = (props) => <Icon {...props} name="alert-circle-outline" />;
 
@@ -30,6 +32,9 @@ export const SignInScreen = ({ navigation }) => {
     password: null,
   });
   const [secureTextEntry, setSecureTextEntry] = React.useState(true);
+
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
@@ -51,6 +56,18 @@ export const SignInScreen = ({ navigation }) => {
       </View>
     );
   };
+
+  async function handleSubmit() {
+    // dispatch(
+    //   login({
+    //     email: form.email,
+    //   })
+    // );
+  }
+
+  useEffect(() => {
+    console.log(auth);
+  }, [auth]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -93,7 +110,7 @@ export const SignInScreen = ({ navigation }) => {
             >
               Novo por aqui? Crie sua conta
             </Text>
-            <Button style={styles.button} size="medium">
+            <Button style={styles.button} size="medium" onPress={handleSubmit}>
               Entrar
             </Button>
           </View>

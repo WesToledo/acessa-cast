@@ -17,8 +17,6 @@ import {
   Icon,
 } from "@ui-kitten/components";
 
-const AlertIcon = (props) => <Icon {...props} name="alert-circle-outline" />;
-
 export const SignUpScreen = ({ navigation }) => {
   const [form, setForm] = useState({
     email: null,
@@ -27,9 +25,16 @@ export const SignUpScreen = ({ navigation }) => {
     password_confirm: null,
   });
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [shouldCaptionRender, setShouldCaptionRender] = useState(false);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
+  };
+
+  const checkPassword = () => {
+    if (form.password !== form.password_confirm) {
+      setShouldCaptionRender(true);
+    }
   };
 
   const renderIcon = (props) => (
@@ -41,17 +46,15 @@ export const SignUpScreen = ({ navigation }) => {
   const renderCaption = () => {
     return (
       <View style={styles.captionContainer}>
-        {AlertIcon(styles.captionIcon)}
-        <Text style={styles.captionText}>
-          Deve conter pelo menos 8 caracteres
-        </Text>
+        <Icon name="alert-circle-outline" style={styles.captionIcon} />
+        <Text style={styles.captionText}>Senhas não coincidem</Text>
       </View>
     );
   };
 
-  useEffect(() => {
-    console.log(form);
-  }, [form]);
+  function handleSubmit() {
+    checkPassword();
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -86,7 +89,6 @@ export const SignUpScreen = ({ navigation }) => {
               value={form.password}
               label="Senha"
               placeholder="Digite sua senha"
-              caption={renderCaption}
               accessoryRight={renderIcon}
               secureTextEntry={secureTextEntry}
               onChangeText={(nextValue) =>
@@ -99,12 +101,14 @@ export const SignUpScreen = ({ navigation }) => {
               label="Confirme sua senha"
               placeholder="Digite sua senha novamente"
               accessoryRight={renderIcon}
+              status={shouldCaptionRender ? "danger" : "basic"}
+              renderCaption={renderCaption}
               secureTextEntry={secureTextEntry}
               onChangeText={(nextValue) =>
                 setForm({ ...form, password_confirm: nextValue })
               }
             />
-            <Button style={styles.button} size="medium">
+            <Button style={styles.button} size="medium" onPress={handleSubmit}>
               Entrar
             </Button>
           </View>
@@ -150,7 +154,7 @@ const styles = StyleSheet.create({
   captionText: {
     fontSize: 12,
     fontWeight: "400",
-    color: "#8F9BB3",
+    color: "red",
   },
   form: {
     paddingHorizontal: 15,
