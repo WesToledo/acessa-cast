@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import Constants from "expo-constants";
 import {
-  Button,
-  Divider,
   Layout,
   TopNavigation,
+  TopNavigationAction,
+  Icon,
   Spinner,
 } from "@ui-kitten/components";
 
 import { Section } from "./components/section.component";
 import api from "src/services/api";
+import { useNavigation } from "@react-navigation/core";
 
-export const HomeScreen = ({ navigation }) => {
+const SettingsIcon = (props) => <Icon {...props} name="layers-outline" />;
+
+export const HomeScreen = () => {
+  const navigation = useNavigation();
+
   const [albums, setAlbums] = useState([]);
 
   useEffect(() => {
@@ -19,23 +25,28 @@ export const HomeScreen = ({ navigation }) => {
       try {
         const { data } = await api.get("/album/");
         setAlbums(data.albums);
-        console.log(data);
       } catch (err) {}
     }
     getAlbums();
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safeArea}>
       <Layout style={{ flex: 1 }}>
         {/* Se trackplayer estiver aberto, dar espaçamento de 70  */}
         <ScrollView style={{ marginBottom: 70 }}>
-          <TopNavigation title="MyApp" alignment="center" />
+          <TopNavigation
+            title=""
+            accessoryRight={() => (
+              <TopNavigationAction
+                icon={SettingsIcon}
+                onPress={() => navigation.navigate("Playlist")}
+              />
+            )}
+          />
+
           {albums.length != 0 ? (
-            <Section
-              title="Albuns"
-              albums={albums}
-            />
+            <Section title="Albuns" albums={albums} />
           ) : (
             <Layout style={styles.spinner}>
               <Spinner size="giant" />
@@ -52,6 +63,10 @@ export const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    paddingTop: Constants.statusBarHeight,
+  },
   spinner: {
     height: "100%",
     flex: 1,

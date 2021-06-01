@@ -9,7 +9,6 @@ export default function controller(state = INITIAL, action) {
         sound: action.payload.sound,
       };
     case "UNLOAD_PLAYBACK": {
-      console.log("ubnloaded");
       return { sound: null };
     }
 

@@ -15,3 +15,12 @@ export function addToTop(podcast) {
     },
   };
 }
+
+export function removeMusic(id) {
+  return {
+    type: "REMOVE_MUSIC",
+    payload: {
+      id,
+    },
+  };
+}

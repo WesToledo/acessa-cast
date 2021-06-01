@@ -95,7 +95,6 @@ export function TrackPlayer({}) {
   }
 
   async function changeTrack() {
-    console.log(playlist);
     dispatch(controllerNextMusic());
     loadAudio({ fromStart: true });
   }

@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   title: {
-    paddingTop: 15,
     fontWeight: "bold",
   },
   cards: {

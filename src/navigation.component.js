@@ -22,6 +22,7 @@ import { ProfileScreen } from "screens/Profile";
 import { TrackDetailsScreen } from "src/screens/Details";
 import { TrackPlayer } from "src/screens/TrackBottomPlayer/index";
 import { AlbumDetailsScreen } from "screens/AlbumDetails";
+import { PlaylistScreen } from "screens/Playlist";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -93,6 +94,15 @@ function RootStackScreen() {
           headerShown: false,
         }}
       />
+
+      <RootStack.Screen
+        name="Playlist"
+        component={PlaylistScreen}
+        screenOptions={{
+          headerShown: true,
+        }}
+      />
+      
     </RootStack.Navigator>
   );
 }

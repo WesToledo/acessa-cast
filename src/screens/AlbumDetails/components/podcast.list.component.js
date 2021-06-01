@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, StyleSheet, ScrollView, Image } from "react-native";
+import { Dimensions, StyleSheet, ScrollView, View } from "react-native";
 import {
   Icon,
   Text,
@@ -22,8 +22,8 @@ export const AlbumPodcastList = ({ podcasts }) => {
         </Text>
       </Layout>
       <ScrollView style={styles.card_container}>
-        {podcasts.map((podcast) => (
-          <>
+        {podcasts.map((podcast, index) => (
+          <View key={index}>
             <Card
               title={podcast.title}
               description={podcast.description}
@@ -31,7 +31,7 @@ export const AlbumPodcastList = ({ podcasts }) => {
               podcast={podcast}
             />
             <Divider />
-          </>
+          </View>
         ))}
 
         <Layout style={{ height: 55 }} />
