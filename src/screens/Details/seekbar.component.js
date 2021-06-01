@@ -37,7 +37,7 @@ export function SeekBar({
         onSlidingStart={onSlidingStart}
         onSlidingComplete={onSeek}
         value={currentPosition}
-        minimumTrackTintColor="#000"
+        minimumTrackTintColor="#02C497"
         maximumTrackTintColor="rgba(0, 0, 0, 0.40)"
         thumbStyle={styles.thumb}
         trackStyle={styles.track}

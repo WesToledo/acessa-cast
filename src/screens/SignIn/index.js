@@ -131,14 +131,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#1F2876",
+    backgroundColor: "#02C497",
   },
   text: {
     padding: 10,
     fontWeight: "bold",
   },
   content: {
-    backgroundColor: "#fff",
+    backgroundColor: "#222b45",
     borderRadius: 5,
     width: "90%",
     justifyContent: "space-around",
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   captionText: {
     fontSize: 12,
     fontWeight: "400",
-    color: "#8F9BB3",
+    color: "#02C497",
   },
   form: {
     marginTop: 40,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   },
   singup: {
     alignSelf: "flex-end",
-    color: "#1F2876",
+    color: "#02C497",
   },
   button: {
     marginTop: 15,

@@ -7,21 +7,27 @@ import {
   TopNavigationAction,
   Layout,
 } from "@ui-kitten/components";
+import Constants from "expo-constants";
 
 var width = Dimensions.get("window").width;
 import img from "../../../assets/thumb.jpg";
 
-export const AlbumDetails = () => {
+export const AlbumDetails = ({ title, description, author, imageSource }) => {
   return (
     <Layout style={styles.container}>
       <Layout>
-        <Image source={img} style={styles.image} />
+        <Image
+          source={{
+            uri: Constants.manifest.extra.SERVER_URL + "/ftp/" + imageSource,
+          }}
+          style={styles.image}
+        />
       </Layout>
       <Layout>
         <Text category="h4" style={styles.title}>
-          Nerdcasasdasdast
+          {title}
         </Text>
-        <Text category="s1">Nerdcast</Text>
+        <Text category="s1">{description}</Text>
       </Layout>
     </Layout>
   );

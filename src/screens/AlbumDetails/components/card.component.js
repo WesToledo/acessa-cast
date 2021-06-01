@@ -6,9 +6,15 @@ import {
   Dimensions,
   TouchableHighlight,
 } from "react-native";
-import { Icon, Text, Button } from "@ui-kitten/components";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/core";
 
-import img from "../../../assets/thumb.jpg";
+import { Icon, Text, Button } from "@ui-kitten/components";
+import Constants from "expo-constants";
+
+import { addToTop } from "actions/playlist";
+import { reset } from "actions/controller";
+import { unloadPlayback } from "actions/playback";
 
 var width = Dimensions.get("window").width;
 
@@ -16,20 +22,39 @@ const DownloadIcon = (props) => (
   <Icon {...props} name="cloud-download-outline" />
 );
 
-export const Card = ({ navigation, name, description, imageSource }) => {
+export const Card = ({ title, description, imageSource, podcast }) => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const playback = useSelector((state) => state.playback);
+
+  async function handleAddToPlaylist() {
+    if (playback.sound != null) {
+      await playback.sound.unloadAsync();
+    }
+
+    dispatch(reset()); // controller reset
+    dispatch(unloadPlayback());
+    dispatch(addToTop(podcast));
+  }
+
   return (
     <View style={styles.content}>
       <TouchableHighlight
         style={styles.image_container}
         activeOpacity={0.6}
         underlayColor="#DDDDDD"
-        onPress={() => console.log("touch")}
+        onPress={handleAddToPlaylist}
       >
-        <Image source={img} style={styles.thumb} />
+        <Image
+          source={{
+            uri: Constants.manifest.extra.SERVER_URL + "/ftp/" + imageSource,
+          }}
+          style={styles.thumb}
+        />
       </TouchableHighlight>
       <View>
         <Text numberOfLines={3} style={styles.thumb_text} category="s1">
-          {name}
+          {title}
         </Text>
         <Text
           numberOfLines={2}
@@ -40,7 +65,7 @@ export const Card = ({ navigation, name, description, imageSource }) => {
           {description}
         </Text>
       </View>
-      <View style={styles.button_container}>
+      {/* <View style={styles.button_container}>
         <Button
           style={styles.button}
           status="primary"
@@ -48,7 +73,7 @@ export const Card = ({ navigation, name, description, imageSource }) => {
           appearance="ghost"
           accessoryLeft={DownloadIcon}
         />
-      </View>
+      </View> */}
     </View>
   );
 };

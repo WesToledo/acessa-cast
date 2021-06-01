@@ -6,3 +6,12 @@ export function nextMusic(newIndex) {
     },
   };
 }
+
+export function addToTop(podcast) {
+  return {
+    type: "ADD_ONE_TO_TOP",
+    payload: {
+      podcast,
+    },
+  };
+}

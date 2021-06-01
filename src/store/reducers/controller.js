@@ -1,5 +1,5 @@
 const INITIAL = {
-  isPlaying: false,
+  isPlaying: true,
   loading: true,
   volume: 1.0,
   isBuffering: false,
@@ -27,9 +27,9 @@ export default function controller(state = INITIAL, action) {
         ...state,
         seek: { currentPosition: action.payload.currentPosition },
       };
-    case "CONTROLLER_NEXT_MUSIC":
+    case "RESET":
       return {
-        isPlaying: false,
+        isPlaying: true,
         loading: true,
         volume: 1.0,
         isBuffering: false,

@@ -21,29 +21,24 @@ const BackAction = () => {
   );
 };
 
-var podcasts = [
-  { name: "NerdCast", description: "asd" },
-  { name: "NerdCast", description: "asd" },
-  { name: "NerdCast", description: "asd" },
-  { name: "NerdCast", description: "asd" },
-  { name: "NerdCast", description: "asd" },
-  { name: "NerdCast", description: "asd" },
-  { name: "NerdCast", description: "asd" },
-  { name: "NerdCast", description: "asd" },
-  { name: "NerdCast", description: "asd" },
-  { name: "NerdCast", description: "asd" },
-];
+export const AlbumDetailsScreen = ({ route, navigation }) => {
+  const { _id, title, description, author, image_source, podcasts } =
+    route.params;
 
-export const AlbumDetailsScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <TopNavigation
         accessoryLeft={BackAction}
-        title="Nerdcasts"
+        title={author.name}
         alignment="center"
       />
       <Layout style={{ flex: 1 }}>
-        <AlbumDetails />
+        <AlbumDetails
+          title={title}
+          description={description}
+          author={author}
+          imageSource={image_source}
+        />
         <AlbumPodcastList podcasts={podcasts} />
       </Layout>
     </SafeAreaView>

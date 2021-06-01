@@ -1,8 +1,9 @@
-import React from "react";
-import { StyleSheet, View, Button } from "react-native";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+
 import {
   BottomNavigation,
   BottomNavigationTab,
@@ -21,7 +22,6 @@ import { ProfileScreen } from "screens/Profile";
 import { TrackDetailsScreen } from "src/screens/Details";
 import { TrackPlayer } from "src/screens/TrackBottomPlayer/index";
 import { AlbumDetailsScreen } from "screens/AlbumDetails";
-import { useSelector } from "react-redux";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -51,20 +51,26 @@ const BottomTabBar = ({ navigation, state }) => (
   </BottomNavigation>
 );
 
-const TabNavigator = () => (
-  <>
-    <TrackPlayer />
-    <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
-      <Screen name="Home" component={HomeScreen} />
-      <Screen name="Search" component={SearchScreen} />
-      <Screen name="Creators" component={OrdersScreen} />
-      <Screen name="Downloads" component={DownloadsScreen} />
-      <Screen name="Profile" component={ProfileScreen} />
-      <Screen name="AlbumDetails" component={AlbumDetailsScreen} />
-      {/* <Screen name="Orders" component={OrdersScreen} /> */}
-    </Navigator>
-  </>
-);
+function TabNavigator() {
+  const playlist = useSelector((state) => state.playlist);
+  const playback = useSelector((state) => state.playback);
+
+  return (
+    <>
+      {playlist.podcasts.length != 0 ? <TrackPlayer /> : <></>}
+
+      <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
+        <Screen name="Home" component={HomeScreen} />
+        <Screen name="Search" component={SearchScreen} />
+        <Screen name="Creators" component={OrdersScreen} />
+        <Screen name="Downloads" component={DownloadsScreen} />
+        <Screen name="Profile" component={ProfileScreen} />
+        <Screen name="AlbumDetails" component={AlbumDetailsScreen} />
+        {/* <Screen name="Orders" component={OrdersScreen} /> */}
+      </Navigator>
+    </>
+  );
+}
 
 function RootStackScreen() {
   return (

@@ -25,9 +25,9 @@ export function updateSeekCurrentPosition(currentPosition) {
   };
 }
 
-export function nextMusic() {
+export function reset() {
   return {
-    type: "CONTROLLER_NEXT_MUSIC",
+    type: "RESET",
     payload: {},
   };
 }

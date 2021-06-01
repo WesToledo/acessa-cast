@@ -22,9 +22,14 @@ export const AlbumPodcastList = ({ podcasts }) => {
         </Text>
       </Layout>
       <ScrollView style={styles.card_container}>
-        {podcasts.map(({ name, description }) => (
+        {podcasts.map((podcast) => (
           <>
-            <Card name={name} description={description} />
+            <Card
+              title={podcast.title}
+              description={podcast.description}
+              imageSource={podcast.image_source}
+              podcast={podcast}
+            />
             <Divider />
           </>
         ))}

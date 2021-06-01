@@ -8,10 +8,11 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Layout, Text } from "@ui-kitten/components";
+import Constants from "expo-constants";
 
 import img from "../../../assets/thumb.jpg";
 
-export const Section = ({ title, podcasts }) => {
+export const Section = ({ title, albums }) => {
   const navigation = useNavigation();
   return (
     <Layout style={styles.container}>
@@ -20,22 +21,44 @@ export const Section = ({ title, podcasts }) => {
       </Text>
 
       <ScrollView horizontal={true} style={styles.cards}>
-        {podcasts.map((podcast, index) => (
-          <View key={index}>
-            <TouchableHighlight
-              key={index}
-              style={{ width: 120, marginRight: 10 }}
-              activeOpacity={0.6}
-              underlayColor="#DDDDDD"
-              onPress={() => navigation.navigate("AlbumDetails")}
-            >
-              <Image source={img} style={styles.thumb} />
-            </TouchableHighlight>
-            <Text numberOfLines={2} style={styles.thumb_text} category="s2">
-              NerdCast #200 - Agora já é tarde asdasd
-            </Text>
-          </View>
-        ))}
+        {albums.map(
+          (
+            { _id, title, description, author, image_source, podcasts },
+            index
+          ) => (
+            <View key={index}>
+              <TouchableHighlight
+                key={_id}
+                style={{ width: 120, marginRight: 10 }}
+                activeOpacity={0.6}
+                underlayColor="#DDDDDD"
+                onPress={() =>
+                  navigation.navigate("AlbumDetails", {
+                    _id,
+                    title,
+                    description,
+                    author,
+                    image_source,
+                    podcasts,
+                  })
+                }
+              >
+                <Image
+                  source={{
+                    uri:
+                      Constants.manifest.extra.SERVER_URL +
+                      "/ftp/" +
+                      image_source,
+                  }}
+                  style={styles.thumb}
+                />
+              </TouchableHighlight>
+              <Text numberOfLines={2} style={styles.thumb_text} category="s2">
+                {title}
+              </Text>
+            </View>
+          )
+        )}
       </ScrollView>
     </Layout>
   );
