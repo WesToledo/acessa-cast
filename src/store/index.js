@@ -11,7 +11,7 @@ const middlewares = [];
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "playlist", "controller"],
 };
 const persistedReducer = persistReducer(persistConfig, reducers);
 let store = createStore(persistedReducer);

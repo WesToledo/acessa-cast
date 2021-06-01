@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
-      "screens/*": ["src/screens/*"]
+      "screens/*": ["src/screens/*"],
+      "actions/*": ["src/store/actions/*"]
     }
   }
 }

@@ -4,7 +4,12 @@ import { Layout, Icon } from "@ui-kitten/components";
 
 var width = Dimensions.get("window").width;
 
-export function PlayBackControls({ onPressPlay, onPressPause, isPlaying }) {
+export function PlayBackControls({
+  onPressPlay,
+  onPressPause,
+  isPlaying,
+  handleNextTrack,
+}) {
   return (
     <Layout style={styles.playback_controls}>
       <TouchableHighlight
@@ -46,7 +51,7 @@ export function PlayBackControls({ onPressPlay, onPressPause, isPlaying }) {
         style={styles.icon_container}
         activeOpacity={0.6}
         underlayColor="#DDDDDD"
-        onPress={() => console.log("touch")}
+        onPress={handleNextTrack}
       >
         <Icon style={styles.icon} fill="#0A0A0A" name="rewind-right" />
       </TouchableHighlight>

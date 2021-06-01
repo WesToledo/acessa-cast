@@ -19,6 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { login } from "src/store/actions/auth";
+import api from "src/services/api";
 
 const AlertIcon = (props) => <Icon {...props} name="alert-circle-outline" />;
 
@@ -58,16 +59,21 @@ export const SignInScreen = ({ navigation }) => {
   };
 
   async function handleSubmit() {
-    // dispatch(
-    //   login({
-    //     email: form.email,
-    //   })
-    // );
-  }
+    try {
+      const response = await api.post("/login", {
+        email: form.email,
+        password: form.password,
+      });
 
-  useEffect(() => {
-    console.log(auth);
-  }, [auth]);
+      dispatch(
+        login({
+          ...response.data.user,
+        })
+      );
+    } catch (err) {
+      console.log("ERRO AO LOGAR", err);
+    }
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

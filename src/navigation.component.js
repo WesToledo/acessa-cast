@@ -21,6 +21,7 @@ import { ProfileScreen } from "screens/Profile";
 import { TrackDetailsScreen } from "src/screens/Details";
 import { TrackPlayer } from "src/screens/TrackBottomPlayer/index";
 import { AlbumDetailsScreen } from "screens/AlbumDetails";
+import { useSelector } from "react-redux";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -86,29 +87,32 @@ function RootStackScreen() {
           headerShown: false,
         }}
       />
-
-      {/* AlbumDetails */}
     </RootStack.Navigator>
   );
 }
 
-export const AppNavigator = () => (
-  <NavigationContainer>
-    <RootStack.Navigator>
-      <RootStack.Screen
-        name="SignIn"
-        component={SignInScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <RootStack.Screen
-        name="SignUp"
-        component={SignUpScreen}
-        options={{ title: "" }}
-      />
-    </RootStack.Navigator>
-
-    {/* <RootStackScreen /> */}
-  </NavigationContainer>
-);
+export function AppNavigator() {
+  const { authenticated } = useSelector((state) => state.auth);
+  return (
+    <NavigationContainer>
+      {!authenticated ? (
+        <RootStack.Navigator>
+          <RootStack.Screen
+            name="SignIn"
+            component={SignInScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <RootStack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+            options={{ title: "" }}
+          />
+        </RootStack.Navigator>
+      ) : (
+        <RootStackScreen />
+      )}
+    </NavigationContainer>
+  );
+}

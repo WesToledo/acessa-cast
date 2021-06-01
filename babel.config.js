@@ -10,6 +10,7 @@ module.exports = function (api) {
           alias: {
             src: ["./src"],
             screens: ["./src/screens"],
+            actions: ["./src/store/actions"],
           },
         },
       ],

@@ -6,118 +6,104 @@ import { Audio } from "expo-av";
 
 import api from "src/services/api";
 
+import {
+  beginPlaying,
+  playPauseMusic,
+  updateSeekCurrentPosition,
+  nextMusic as controllerNextMusic,
+  setLoading,
+} from "actions/controller";
+import { instancePlayback, unloadPlayback } from "actions/playback";
+import { nextMusic as playlistNextMusic } from "actions/playlist";
+
 import { SeekBar } from "./seekbar.component";
 import { Header } from "./header.component";
 import { PlayBackControls } from "./playback.component";
 import { AlbumArt } from "./albumart.component";
 import { TrackDetails } from "./trackdetails.component";
-
-const audioBookPlaylist = [
-  {
-    title: "Hamlet - Act I",
-    author: "William Shakespeare",
-    source: "Librivox",
-    uri: "https://ia800204.us.archive.org/11/items/hamlet_0911_librivox/hamlet_act1_shakespeare.mp3",
-    imageSource:
-      "http://www.archive.org/download/LibrivoxCdCoverArt8/hamlet_1104.jpg",
-  },
-  {
-    title: "Hamlet - Act II",
-    author: "William Shakespeare",
-    source: "Librivox",
-    uri: "https://ia600204.us.archive.org/11/items/hamlet_0911_librivox/hamlet_act2_shakespeare.mp3",
-    imageSource:
-      "http://www.archive.org/download/LibrivoxCdCoverArt8/hamlet_1104.jpg",
-  },
-  {
-    title: "Hamlet - Act III",
-    author: "William Shakespeare",
-    source: "Librivox",
-    uri: "http://www.archive.org/download/hamlet_0911_librivox/hamlet_act3_shakespeare.mp3",
-    imageSource:
-      "http://www.archive.org/download/LibrivoxCdCoverArt8/hamlet_1104.jpg",
-  },
-  {
-    title: "Hamlet - Act IV",
-    author: "William Shakespeare",
-    source: "Librivox",
-    uri: "https://ia800204.us.archive.org/11/items/hamlet_0911_librivox/hamlet_act4_shakespeare.mp3",
-    imageSource:
-      "http://www.archive.org/download/LibrivoxCdCoverArt8/hamlet_1104.jpg",
-  },
-  {
-    title: "Hamlet - Act V",
-    author: "William Shakespeare",
-    source: "Librivox",
-    uri: "https://ia600204.us.archive.org/11/items/hamlet_0911_librivox/hamlet_act5_shakespeare.mp3",
-    imageSource:
-      "http://www.archive.org/download/LibrivoxCdCoverArt8/hamlet_1104.jpg",
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
 
 export function TrackDetailsScreen({ navigation }) {
-  const [state, setState] = useState({
-    isPlaying: false,
-    currentIndex: 0,
-    volume: 1.0,
-    isBuffering: false,
-    trackLength: 1,
-  });
-  const [sound, setSound] = useState();
-  const [load, setLoad] = useState(false);
-  const [seekCurrentPosition, setSeekCurrentPosition] = useState({
-    currentPosition: 0,
-  });
+  const dispatch = useDispatch();
 
-  async function loadAudio() {
-    const { currentIndex, isPlaying, volume } = state;
+  const controller = useSelector((state) => state.controller);
+  const playback = useSelector((state) => state.playback);
+  const playlist = useSelector((state) => state.playlist);
+
+  useEffect(() => {
+    console.log(controller);
+  }, [controller]);
+
+  async function loadAudio({ fromStart }) {
+    const { isPlaying, volume } = controller;
+
+    await dispatch(setLoading());
+    console.warn("current position", controller.seek.currentPosition);
 
     try {
       const source = {
-        uri: audioBookPlaylist[currentIndex].uri,
+        uri: playlist.podcasts[playlist.currentIndex].uri,
       };
-
       const initialStatus = {
         shouldPlay: isPlaying,
         volume,
+        positionMillis: fromStart
+          ? 0
+          : Math.floor(controller.seek.currentPosition * 1000),
       };
       const { sound, status } = await Audio.Sound.createAsync(
         source,
         initialStatus
       );
 
-      const length = Math.floor(status.durationMillis / 1000);
-      setState({
-        ...state,
-        trackLength: length,
-      });
-
+      const trackLength = Math.floor(status.durationMillis / 1000);
       sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
-      setSound(sound);
-      setLoad(true);
+      await dispatch(instancePlayback(sound));
+      await dispatch(
+        beginPlaying({
+          trackLength,
+        })
+      );
     } catch (e) {
       console.log(e);
     }
   }
 
   async function handlePlayPause() {
-    if (!state.isPlaying) {
-      await sound.playAsync();
+    if (!controller.isPlaying) {
+      await playback.sound.playAsync();
     } else {
-      await sound.pauseAsync();
+      await playback.sound.pauseAsync();
     }
-    setState({ ...state, isPlaying: !state.isPlaying });
+    dispatch(playPauseMusic(!controller.isPlaying));
   }
 
   const handlePreviousTrack = async () => {};
 
-  const handleNextTrack = async () => {};
+  async function handleNextTrack() {
+    const { podcasts, currentIndex } = playlist;
+
+    await playback.sound.pauseAsync();
+
+    if (playback.sound != null) {
+      await playback.sound.unloadAsync();
+    }
+
+    var index = currentIndex;
+    index < podcasts.length - 1 ? (index += 1) : (index = 0);
+
+    await dispatch(controllerNextMusic());
+    await dispatch(playlistNextMusic(index));
+    loadAudio({ fromStart: true });
+  }
 
   function onPlaybackStatusUpdate(status) {
-    setSeekCurrentPosition({
-      currentPosition: Math.floor(status.positionMillis / 1000),
-    });
+    if (status.isPlaying) {
+      dispatch(
+        updateSeekCurrentPosition(Math.floor(status.positionMillis / 1000))
+      );
+    }
   }
 
   // async function getTrack() {
@@ -143,18 +129,14 @@ export function TrackDetailsScreen({ navigation }) {
   async function onSeek(time) {
     time = Math.round(time);
 
-    await sound.setPositionAsync(time * 1000);
+    await playback.sound.setPositionAsync(time * 1000);
+    console.warn("onSeek");
 
-    setSeekCurrentPosition({
-      currentPosition: time,
-    });
-
-    setState({ ...state, isPlaying: true });
+    dispatch(updateSeekCurrentPosition(time));
+    dispatch(playPauseMusic(true));
   }
 
   useEffect(() => {
-    // getTrack();
-
     async function setAudio() {
       try {
         await Audio.setAudioModeAsync({
@@ -167,37 +149,39 @@ export function TrackDetailsScreen({ navigation }) {
           playThroughEarpieceAndroid: true,
         });
 
-        loadAudio();
+        loadAudio({ fromStart: false });
       } catch (e) {
         console.log(e);
       }
     }
-    setAudio();
-  }, []);
 
-  useEffect(() => {
-    console.log("seek changed", seekCurrentPosition);
-  }, [seekCurrentPosition]);
+    if (playback.sound == null) setAudio();
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <Layout style={styles.container}>
         <Header />
         <AlbumArt />
-        {load ? (
+        {!controller.loading ? (
           <View style={styles.footer}>
             <TrackDetails />
 
             <SeekBar
-              trackLength={state.trackLength}
-              currentPosition={seekCurrentPosition.currentPosition}
+              trackLength={controller.trackLength}
+              currentPosition={
+                controller.seek.currentPosition
+                  ? controller.seek.currentPosition
+                  : 0
+              }
               onSeek={onSeek}
-              onSlidingStart={() => setState({ ...state, isPlaying: false })}
+              onSlidingStart={() => dispatch(playPauseMusic(false))}
             />
             <PlayBackControls
               onPressPlay={handlePlayPause}
               onPressPause={handlePlayPause}
-              isPlaying={state.isPlaying}
+              isPlaying={controller.isPlaying}
+              handleNextTrack={handleNextTrack}
             />
           </View>
         ) : (

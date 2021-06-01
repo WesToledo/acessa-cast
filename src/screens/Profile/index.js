@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,10 +15,18 @@ import {
   Button,
 } from "@ui-kitten/components";
 
+import { logout } from "actions/auth";
+
 const SettingsIcon = (props) => <Icon {...props} name="settings-2" />;
 const LogOutIcon = (props) => <Icon {...props} name="log-out" />;
 
 export const ProfileScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+  function handleLogOut() {
+    dispatch(logout());
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Layout style={{ flex: 1 }}>
@@ -45,6 +54,7 @@ export const ProfileScreen = ({ navigation }) => {
             accessoryLeft={LogOutIcon}
             size="large"
             style={styles.button}
+            onPress={handleLogOut}
           >
             Sair
           </Button>
