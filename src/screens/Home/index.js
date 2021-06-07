@@ -13,7 +13,7 @@ import { Section } from "./components/section.component";
 import api from "src/services/api";
 import { useNavigation } from "@react-navigation/core";
 
-const SettingsIcon = (props) => <Icon {...props} name="layers-outline" />;
+const PlaylistIcon = (props) => <Icon {...props} name="layers-outline" />;
 
 export const HomeScreen = () => {
   const navigation = useNavigation();
@@ -33,18 +33,17 @@ export const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <Layout style={{ flex: 1 }}>
-        {/* Se trackplayer estiver aberto, dar espaçamento de 70  */}
+        <TopNavigation
+          title="Acessa Cast"
+          alignment="center"
+          accessoryRight={() => (
+            <TopNavigationAction
+              icon={PlaylistIcon}
+              onPress={() => navigation.navigate("Playlist")}
+            />
+          )}
+        />
         <ScrollView style={{ marginBottom: 70 }}>
-          <TopNavigation
-            title=""
-            accessoryRight={() => (
-              <TopNavigationAction
-                icon={SettingsIcon}
-                onPress={() => navigation.navigate("Playlist")}
-              />
-            )}
-          />
-
           {albums.length != 0 ? (
             <Section title="Albuns" albums={albums} />
           ) : (

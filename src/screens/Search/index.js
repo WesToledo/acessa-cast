@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import {
   Icon,
@@ -7,6 +7,7 @@ import {
   TopNavigation,
   Text,
 } from "@ui-kitten/components";
+import Constants from "expo-constants";
 
 const SearchIcon = (props) => <Icon {...props} name="search-outline" />;
 
@@ -14,6 +15,8 @@ import { ListCards } from "./components/list.cards.components";
 
 export const SearchScreen = ({ navigation }) => {
   const [value, setValue] = React.useState("");
+  const [shouldRender, setShouldRender] = useState(false);
+  const [shouldLoadSpinner, setShouldLoadSpinner] = useState(false);
 
   var podcasts = [
     { name: "NerdCast", description: "asd" },
@@ -29,9 +32,9 @@ export const SearchScreen = ({ navigation }) => {
   ];
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safeArea}>
       <Layout style={{ flex: 1 }}>
-        <TopNavigation title="MyApp" alignment="center" />
+        <TopNavigation title="" alignment="center" />
 
         <ScrollView>
           <Text category="h4" style={styles.title}>
@@ -47,10 +50,17 @@ export const SearchScreen = ({ navigation }) => {
               style={styles.search_input}
             />
           </Layout>
-
-          <Layout style={styles.podcasts_list}>
-            <ListCards podcasts={podcasts} />
-          </Layout>
+          {shouldRender ? (
+            <Layout style={styles.podcasts_list}>
+              {!shouldLoadSpinner ? (
+                <ListCards podcasts={podcasts} />
+              ) : (
+                <View style={styles.spinner}>
+                  <Spinner size="giant" />
+                </View>
+              )}
+            </Layout>
+          ) : undefined}
         </ScrollView>
       </Layout>
     </SafeAreaView>
@@ -58,8 +68,11 @@ export const SearchScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    paddingTop: Constants.statusBarHeight,
+  },
   title: {
-    paddingTop: 15,
     marginLeft: 15,
     fontWeight: "bold",
   },

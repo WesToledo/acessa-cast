@@ -18,11 +18,13 @@ import { SignUpScreen } from "src/screens/SignUp";
 import { HomeScreen } from "screens/Home";
 import { SearchScreen } from "screens/Search";
 import { DownloadsScreen } from "screens/Downloads";
+import { CreatorsScreen } from "screens/Creators";
 import { ProfileScreen } from "screens/Profile";
 import { TrackDetailsScreen } from "src/screens/Details";
 import { TrackPlayer } from "src/screens/TrackBottomPlayer/index";
 import { AlbumDetailsScreen } from "screens/AlbumDetails";
 import { PlaylistScreen } from "screens/Playlist";
+import { NewPodcastScreen } from "screens/Creators/new.podcast";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -33,12 +35,6 @@ const BulbIcon = (props) => <Icon {...props} name="bulb-outline" />;
 const CloudIcon = (props) => <Icon {...props} name="cloud-download-outline" />;
 const PersonIcon = (props) => <Icon {...props} name="person-outline" />;
 
-const OrdersScreen = () => (
-  <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <Text category="h1">ORDERS</Text>
-  </Layout>
-);
-
 const BottomTabBar = ({ navigation, state }) => (
   <BottomNavigation
     selectedIndex={state.index}
@@ -47,7 +43,7 @@ const BottomTabBar = ({ navigation, state }) => (
     <BottomNavigationTab title="Home" icon={HomeIcon} />
     <BottomNavigationTab title="Buscar" icon={SearchIcon} />
     <BottomNavigationTab title="Criadores" icon={BulbIcon} />
-    <BottomNavigationTab title="Downloads" icon={CloudIcon} />
+    {/* <BottomNavigationTab title="Downloads" icon={CloudIcon} /> */}
     <BottomNavigationTab title="Perfil" icon={PersonIcon} />
   </BottomNavigation>
 );
@@ -63,8 +59,8 @@ function TabNavigator() {
       <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
         <Screen name="Home" component={HomeScreen} />
         <Screen name="Search" component={SearchScreen} />
-        <Screen name="Creators" component={OrdersScreen} />
-        <Screen name="Downloads" component={DownloadsScreen} />
+        <Screen name="Creators" component={CreatorsScreen} />
+        {/* <Screen name="Downloads" component={DownloadsScreen} /> */}
         <Screen name="Profile" component={ProfileScreen} />
         <Screen name="AlbumDetails" component={AlbumDetailsScreen} />
         {/* <Screen name="Orders" component={OrdersScreen} /> */}
@@ -94,6 +90,11 @@ function RootStackScreen() {
           headerShown: false,
         }}
       />
+      <RootStack.Screen
+        name="NewAlbum"
+        component={NewPodcastScreen}
+        options={{ headerShown: false }}
+      />
 
       <RootStack.Screen
         name="Playlist"
@@ -102,7 +103,6 @@ function RootStackScreen() {
           headerShown: true,
         }}
       />
-      
     </RootStack.Navigator>
   );
 }
