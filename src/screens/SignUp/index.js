@@ -10,12 +10,25 @@ import {
 } from "react-native";
 import {
   Button,
-  Divider,
+  Radio,
+  RadioGroup,
   Layout,
   Text,
+  Spinner,
   Input,
   Icon,
 } from "@ui-kitten/components";
+import { useDispatch } from "react-redux";
+
+import api from "src/services/api";
+
+import { login } from "actions/auth";
+
+const LoadingIndicator = (props) => (
+  <View style={[props.style, styles.indicator]}>
+    <Spinner size="small" status="basic" />
+  </View>
+);
 
 export const SignUpScreen = ({ navigation }) => {
   const [form, setForm] = useState({
@@ -26,6 +39,10 @@ export const SignUpScreen = ({ navigation }) => {
   });
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [shouldCaptionRender, setShouldCaptionRender] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const toggleSecureEntry = () => {
     setSecureTextEntry(!secureTextEntry);
@@ -34,7 +51,9 @@ export const SignUpScreen = ({ navigation }) => {
   const checkPassword = () => {
     if (form.password !== form.password_confirm) {
       setShouldCaptionRender(true);
+      return false;
     }
+    return true;
   };
 
   const renderIcon = (props) => (
@@ -52,8 +71,27 @@ export const SignUpScreen = ({ navigation }) => {
     );
   };
 
-  function handleSubmit() {
-    checkPassword();
+  async function handleSubmit() {
+    setLoading(true);
+    if (checkPassword()) {
+      try {
+        const response = await api.post("/user/create", {
+          email: form.email,
+          password: form.password,
+          name: form.name,
+          type: selectedIndex === 0 ? "Student" : "Teacher",
+        });
+
+        dispatch(
+          login({
+            ...response.data.user,
+          })
+        );
+      } catch (err) {
+        setLoading(false);
+        console.log("ERRO AO criar usuario", err);
+      }
+    }
   }
 
   return (
@@ -84,6 +122,21 @@ export const SignUpScreen = ({ navigation }) => {
                 setForm({ ...form, email: nextValue })
               }
             />
+            <Text category="s2" style={{ color: "#8f9bb3" }}>
+              Eu sou:
+            </Text>
+            <RadioGroup
+              selectedIndex={selectedIndex}
+              onChange={(index) => setSelectedIndex(index)}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                alignContent: "center",
+              }}
+            >
+              <Radio>Estudante</Radio>
+              <Radio>Professor</Radio>
+            </RadioGroup>
             <Input
               style={styles.input}
               value={form.password}
@@ -108,9 +161,21 @@ export const SignUpScreen = ({ navigation }) => {
                 setForm({ ...form, password_confirm: nextValue })
               }
             />
-            <Button style={styles.button} size="medium" onPress={handleSubmit}>
-              Entrar
-            </Button>
+            {!loading ? (
+              <Button
+                style={styles.button}
+                size="medium"
+                onPress={handleSubmit}
+              >
+                Entrar
+              </Button>
+            ) : (
+              <Button
+                style={styles.button}
+                size="medium"
+                accessoryLeft={LoadingIndicator}
+              />
+            )}
           </View>
         </Layout>
       </KeyboardAvoidingView>

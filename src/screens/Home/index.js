@@ -24,6 +24,7 @@ export const HomeScreen = () => {
     async function getAlbums() {
       try {
         const { data } = await api.get("/album/");
+        console.log(data.albums);
         setAlbums(data.albums);
       } catch (err) {}
     }
