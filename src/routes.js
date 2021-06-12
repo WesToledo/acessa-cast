@@ -20,11 +20,19 @@ import { SearchScreen } from "screens/Search";
 import { DownloadsScreen } from "screens/Downloads";
 import { CreatorsScreen } from "screens/Creators";
 import { ProfileScreen } from "screens/Profile";
+
 import { TrackDetailsScreen } from "src/screens/Details";
 import { TrackPlayer } from "src/screens/TrackBottomPlayer/index";
-import { AlbumDetailsScreen } from "screens/AlbumDetails";
+
 import { PlaylistScreen } from "screens/Playlist";
-import { NewPodcastScreen } from "screens/Creators/new.podcast";
+
+import { AlbumDetailsScreen } from "screens/AlbumDetails";
+
+import { NewAlbumScreen } from "src/screens/Creators/Album/new.album";
+import { EditAlbumScreen } from "src/screens/Creators/Album/edit.album";
+import { AlbumPodcastEditScreen} from "src/screens/Creators/Podcast/list.album.podcasts";
+
+import { ConfigurationScreen } from "screens/Profile/Configuration";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -92,13 +100,32 @@ function RootStackScreen() {
       />
       <RootStack.Screen
         name="NewAlbum"
-        component={NewPodcastScreen}
+        component={NewAlbumScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen
+        name="EditAlbum"
+        component={EditAlbumScreen}
+        options={{ headerShown: false }}
+      />
+
+      <RootStack.Screen
+        name="AlbumPodcastEdit"
+        component={AlbumPodcastEditScreen}
         options={{ headerShown: false }}
       />
 
       <RootStack.Screen
         name="Playlist"
         component={PlaylistScreen}
+        screenOptions={{
+          headerShown: true,
+        }}
+      />
+
+      <RootStack.Screen
+        name="Configuration"
+        component={ConfigurationScreen}
         screenOptions={{
           headerShown: true,
         }}

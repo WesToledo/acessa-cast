@@ -10,7 +10,6 @@ import {
 import Constants from "expo-constants";
 
 var width = Dimensions.get("window").width;
-import img from "../../../assets/thumb.jpg";
 
 export const AlbumDetails = ({ title, description, author, imageSource }) => {
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,12 +16,15 @@ import {
 } from "@ui-kitten/components";
 
 import { logout } from "actions/auth";
+import { useNavigation } from "@react-navigation/core";
 
 const SettingsIcon = (props) => <Icon {...props} name="settings-2" />;
 const LogOutIcon = (props) => <Icon {...props} name="log-out" />;
 
-export const ProfileScreen = ({ navigation }) => {
+export const ProfileScreen = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const { user } = useSelector((state) => state.auth);
 
   function handleLogOut() {
     dispatch(logout());
@@ -32,10 +35,10 @@ export const ProfileScreen = ({ navigation }) => {
       <Layout style={{ flex: 1 }}>
         <TopNavigation title="Perfil" alignment="center" />
         <Text category="h4" style={styles.title}>
-          Wesley Toledo
+          {user.name}
         </Text>
         <Text category="s1" appearance="hint" style={styles.subtitle}>
-          wesley@mail.com
+          {user.email}
         </Text>
         <Divider />
         <Layout style={styles.list_container}>
@@ -45,6 +48,7 @@ export const ProfileScreen = ({ navigation }) => {
             accessoryLeft={SettingsIcon}
             size="large"
             style={styles.button}
+            onPress={() => navigation.navigate("Configuration")}
           >
             Configurações
           </Button>

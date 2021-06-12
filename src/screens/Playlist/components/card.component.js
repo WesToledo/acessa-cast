@@ -34,7 +34,7 @@ export const Card = ({ title, description, imageSource, id }) => {
       >
         <Image
           source={{
-            uri: Constants.manifest.extra.SERVER_URL + "/ftp/" + imageSource,
+            uri:  imageSource,
           }}
           style={styles.thumb}
         />

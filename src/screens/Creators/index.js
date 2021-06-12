@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { useNavigation, useIsFocused } from "@react-navigation/core";
 import {
   Icon,
@@ -18,6 +18,8 @@ import { MyPocasts } from "./components/my.podcasts";
 
 const NewIcon = (props) => <Icon {...props} name="plus-outline" />;
 
+var height = Dimensions.get("window").height;
+
 export function CreatorsScreen({ route }) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -27,7 +29,8 @@ export function CreatorsScreen({ route }) {
   async function getAlbums() {
     try {
       const { data } = await api.get("/album/");
-      setAlbums(data.albums);
+      if (data.albums.length != 0) setAlbums(data.albums);
+      else setAlbums(null);
     } catch (err) {
       console.log("erro", err);
     }
@@ -60,15 +63,21 @@ export function CreatorsScreen({ route }) {
           Meus podcasts
         </Text>
 
-        <ScrollView>
-          {albums.length != 0 ? (
-            <MyPocasts albums={albums} />
-          ) : (
-            <Layout style={styles.spinner}>
-              <Spinner size="giant" />
-            </Layout>
-          )}
-        </ScrollView>
+        {albums != null ? (
+          <ScrollView>
+            {albums.length != 0 ? (
+              <MyPocasts albums={albums} getAlbums={getAlbums} />
+            ) : (
+              <Layout style={styles.spinner}>
+                <Spinner size="giant" />
+              </Layout>
+            )}
+          </ScrollView>
+        ) : (
+          <Layout>
+            <Text>Você não tem nenhum album publicado ainda</Text>
+          </Layout>
+        )}
       </Layout>
     </SafeAreaView>
   );
@@ -82,5 +91,11 @@ const styles = StyleSheet.create({
   title: {
     marginLeft: 15,
     fontWeight: "bold",
+  },
+  spinner: {
+    flex: 1,
+    height: height - 170,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

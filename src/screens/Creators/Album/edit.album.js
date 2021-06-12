@@ -12,7 +12,7 @@ import {
 import api from "src/services/api";
 import { useNavigation } from "@react-navigation/core";
 
-import Form from "./components/form.component";
+import Form from "./form.component";
 import { useSelector } from "react-redux";
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
@@ -23,40 +23,40 @@ const BackAction = () => {
   );
 };
 
-export function NewPodcastScreen() {
+export function EditAlbumScreen({ route }) {
   const navigation = useNavigation();
-  const { user } = useSelector((state) => state.auth);
+
+  const { _id, title, description, author, image_source, key, knowledge_area } =
+    route.params;
 
   const [form, setForm] = useState({
-    title: undefined,
-    description: undefined,
-    authorId: user._id,
-    image: null,
+    title,
+    description,
+    authorId: author,
+    image: image_source,
+    imageChange: false,
+    key,
+    selectedItems: [knowledge_area],
   });
 
-  async function onSubmit() {
-    var formData = new FormData();
-    var { title, description, authorId, image } = form;
+  console.log(form.selectedItems);
 
-    let fileType = image.substring(image.lastIndexOf(".") + 1);
+  async function onSubmit(onUploadProgress) {
+    onUploadProgress({ loaded: 50, total: 100 });
 
-    formData.append("author", authorId);
-    formData.append("title", title);
-    formData.append("description", description);
-
-    formData.append("thumb", {
-      uri: image,
-      name: `${title}`,
-      type: `image/${fileType}`,
-    });
+    const { title, description, authorId, image, key, selectedItems } = form;
 
     try {
-      const response = await api.post("upload/album", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      await api.put("/album/update/" + _id, {
+        title,
+        description,
+        author: authorId,
+        image_source: image,
+        key,
+        knowledge_area: selectedItems[0],
       });
-      console.log(response.data);
+      onUploadProgress({ loaded: 100, total: 100 });
+
       navigation.navigate("Creators", {
         shouldRefresh: true,
       });
@@ -67,13 +67,18 @@ export function NewPodcastScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Layout style={{ flex: 1 }} >
+      <Layout style={{ flex: 1 }}>
         <TopNavigation
           accessoryLeft={BackAction}
           title="Criar novo album"
           alignment="center"
         />
-        <Form form={form} setForm={setForm} onSubmit={onSubmit} />
+        <Form
+          form={form}
+          setForm={setForm}
+          onSubmit={onSubmit}
+          submitText="Confirmar Edição"
+        />
       </Layout>
     </SafeAreaView>
   );
