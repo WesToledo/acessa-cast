@@ -26,7 +26,9 @@ export const AlbumDetails = ({ title, description, author, imageSource }) => {
         <Text category="h4" style={styles.title}>
           {title}
         </Text>
-        <Text category="s1">{description}</Text>
+        <Text category="s1" style={styles.sub_title} numberOfLines={5}>
+          {description}
+        </Text>
       </Layout>
     </Layout>
   );
@@ -44,6 +46,9 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 15,
     fontWeight: "bold",
+    width: width * 0.6 - 45,
+  },
+  sub_title: {
     width: width * 0.6 - 45,
   },
 });

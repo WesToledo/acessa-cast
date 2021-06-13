@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     maxHeight: 70,
     height: "100%",
     flexDirection: "row",
+    width: "90%",
   },
   podcast_container: {
     flexDirection: "row",
@@ -217,7 +218,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 5,
     fontWeight: "700",
-    width: width - 120 - (15 * 2 + 20) - 50,
+    // width: width - 120 - (15 * 2 + 20) - 50,
+    width: "100%",
   },
   buttons: {
     justifyContent: "center",

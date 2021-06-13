@@ -76,7 +76,7 @@ export const AlbumPodcastEditScreen = ({ route, navigation }) => {
           author={author}
           imageSource={image_source}
         />
-        <AlbumPodcastList podcasts={podcasts} />
+        <AlbumPodcastList podcasts={podcasts} albumId={_id} />
       </Layout>
     </SafeAreaView>
   );

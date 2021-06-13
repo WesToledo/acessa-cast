@@ -1,5 +1,6 @@
 import React from "react";
 import { Dimensions, StyleSheet, ScrollView, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Icon, Text, Layout, Divider, Button } from "@ui-kitten/components";
 
 var width = Dimensions.get("window").width;
@@ -8,7 +9,8 @@ import { Card } from "./card.component";
 
 const NewIcon = (props) => <Icon {...props} name="plus-outline" />;
 
-export const AlbumPodcastList = ({ podcasts }) => {
+export const AlbumPodcastList = ({ albumId, podcasts }) => {
+  const navigation = useNavigation();
   return (
     <Layout style={styles.container}>
       <Layout style={styles.title_container}>
@@ -22,6 +24,11 @@ export const AlbumPodcastList = ({ podcasts }) => {
           status="primary"
           size="small"
           accessoryLeft={NewIcon}
+          onPress={() =>
+            navigation.navigate("NewPodcast", {
+              albumId,
+            })
+          }
         />
       </Layout>
       {podcasts.length > 0 ? (

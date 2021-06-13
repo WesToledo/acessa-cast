@@ -27,7 +27,7 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "SERVER_URL": "https://5980e911732b.ngrok.io"
+      "SERVER_URL": "https://28b2a0792f21.ngrok.io"
     }
   }
 }

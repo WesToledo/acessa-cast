@@ -30,7 +30,9 @@ import { AlbumDetailsScreen } from "screens/AlbumDetails";
 
 import { NewAlbumScreen } from "src/screens/Creators/Album/new.album";
 import { EditAlbumScreen } from "src/screens/Creators/Album/edit.album";
-import { AlbumPodcastEditScreen} from "src/screens/Creators/Podcast/list.album.podcasts";
+
+import { AlbumPodcastEditScreen } from "src/screens/Creators/Podcast/list.album.podcasts";
+import { NewPodcastScreen } from "src/screens/Creators/Podcast/new.podcast";
 
 import { ConfigurationScreen } from "screens/Profile/Configuration";
 
@@ -109,6 +111,11 @@ function RootStackScreen() {
         options={{ headerShown: false }}
       />
 
+      <RootStack.Screen
+        name="NewPodcast"
+        component={NewPodcastScreen}
+        options={{ headerShown: false }}
+      />
       <RootStack.Screen
         name="AlbumPodcastEdit"
         component={AlbumPodcastEditScreen}

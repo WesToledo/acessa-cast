@@ -19,6 +19,7 @@ import {
 import ProgressBar from "react-native-progress/Bar";
 import MultiSelect from "react-native-multiple-select";
 import * as ImagePicker from "expo-image-picker";
+import * as DocumentPicker from "expo-document-picker";
 
 import api from "src/services/api";
 
@@ -32,7 +33,7 @@ export default function Form({
   form,
   setForm,
   onSubmit,
-  submitText = "Criar Álbum",
+  submitText = "Criar Podcast",
 }) {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0.0);
@@ -51,8 +52,8 @@ export default function Form({
 
     async function getAreas() {
       try {
-        const { data } = await api.get("/area/");
-        setAreas(data.area);
+        const { data } = await api.get("/tag/");
+        setAreas(data.tag);
       } catch (err) {
         console.log("erro", err);
       }
@@ -71,6 +72,16 @@ export default function Form({
 
     if (!result.cancelled) {
       setForm({ ...form, image: result.uri, imageChange: true });
+    }
+  };
+
+  const pickDocument = async () => {
+    let options = {
+      type: "audio/mpeg",
+    };
+    let result = await DocumentPicker.getDocumentAsync(options);
+    if (result.type == "success") {
+      setForm({ ...form, audio: result, audioChange: true });
     }
   };
 
@@ -116,7 +127,7 @@ export default function Form({
           placeholder="Place your Text"
           style={styles.input}
           label="Título"
-          placeholder="Escreva o título do álbum"
+          placeholder="Escreva o título do podcast"
           value={form.title}
           onChangeText={(nextValue) => setForm({ ...form, title: nextValue })}
         />
@@ -136,31 +147,44 @@ export default function Form({
           category="s2"
           style={{ color: "#8f9bb3", marginTop: 5, marginBottom: 10 }}
         >
+          Selecione o áudio do podcast
+        </Text>
+        <Button status="primary" size="medium" onPress={pickDocument}>
+          {form.audio ? (
+            <Text category="s1">{form.audio.name}</Text>
+          ) : (
+            <Text category="s1">Selecione</Text>
+          )}
+        </Button>
+
+        <Text
+          category="s2"
+          style={{ color: "#8f9bb3", marginTop: 5, marginBottom: 10 }}
+        >
           Escolha a área do conhecimento do album:
         </Text>
         {areas.length > 0 ? (
           <MultiSelect
-            hideTags
             items={areas}
+            hideSubmitButton
             uniqueKey="_id"
             onSelectedItemsChange={onSelectedItemsChange}
             selectedItems={form.selectedItems}
             selectText="Escolha as tags"
             searchInputPlaceholderText="Procure Tags..."
             onChangeInput={(text) => console.log(text)}
-            tagRemoveIconColor="red"
-            tagBorderColor="#8f9bb3"
+            tagRemoveIconColor="#ff3561"
+            tagBorderColor="#111527"
             tagTextColor="#8f9bb3"
             selectedItemTextColor="#8f9bb3"
             selectedItemIconColor="#8f9bb3"
             itemTextColor="#8f9bb3"
             displayKey="name"
-            single
             selectedItemIconColor="green"
             searchInputStyle={{ color: "#8f9bb3" }}
             textColor="#8f9bb3"
             submitButtonColor="#8f9bb3"
-            submitButtonText="Escolher"
+            submitButtonText="Selecionar estes"
             styleMainWrapper={{ backgroundColor: "transparent" }}
             styleDropdownMenu={{ backgroundColor: "transparent" }}
             styleDropdownMenuSubsection={{
@@ -198,6 +222,7 @@ export default function Form({
             disabled={
               form.selectedItems.length === 0 ||
               form.image === null ||
+              form.audio === null ||
               form.title == undefined ||
               form.description == undefined
             }
