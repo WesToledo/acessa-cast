@@ -22,7 +22,6 @@ import {
 } from "@ui-kitten/components";
 import Constants from "expo-constants";
 import { useDispatch, useSelector } from "react-redux";
-
 import { useNavigation } from "@react-navigation/core";
 
 import api from "src/services/api";
@@ -37,7 +36,7 @@ const LoadingIndicator = (props) => (
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 const BackAction = () => {
-  const navigation = useNavigation;
+  const navigation = useNavigation();
   return (
     <TopNavigationAction icon={BackIcon} onPress={() => navigation.goBack()} />
   );
@@ -116,18 +115,6 @@ export const ConfigurationScreen = ({ navigation }) => {
               <Text category="s2" style={{ color: "#8f9bb3" }}>
                 Eu sou:
               </Text>
-              <RadioGroup
-                selectedIndex={selectedIndex}
-                onChange={(index) => setSelectedIndex(index)}
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  alignContent: "center",
-                }}
-              >
-                <Radio>Estudante</Radio>
-                <Radio>Professor</Radio>
-              </RadioGroup>
 
               {!loading ? (
                 <Button
@@ -135,7 +122,7 @@ export const ConfigurationScreen = ({ navigation }) => {
                   size="medium"
                   onPress={handleSubmit}
                 >
-                  Entrar
+                  Salvar Alterações
                 </Button>
               ) : (
                 <Button

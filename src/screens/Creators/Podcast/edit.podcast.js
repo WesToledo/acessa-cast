@@ -12,7 +12,7 @@ import {
 import api from "src/services/api";
 import { useNavigation } from "@react-navigation/core";
 
-import Form from "./form.new.component";
+import Form from "./form.edit.component";
 import { useSelector } from "react-redux";
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
@@ -23,47 +23,90 @@ const BackAction = () => {
   );
 };
 
-export function NewPodcastScreen({ route }) {
+export function EditPodcastScreen({ route }) {
   const navigation = useNavigation();
   const { user } = useSelector((state) => state.auth);
-  const { albumId } = route.params;
+
+  const {
+    _id,
+    title,
+    description,
+    audio_source,
+    audio_key,
+    image_key,
+    tag,
+    image_source,
+    podcast,
+    publish,
+  } = route.params.podcast;
 
   const [form, setForm] = useState({
-    title: undefined,
-    description: undefined,
     authorId: user._id,
-    image: null,
-    imageChange: false,
-    audio: null,
+    _id,
+    title,
+    description,
+    audio_source,
     audioChange: false,
-    selectedItems: [],
+    audio_key,
+    image_key,
+    image_source,
+    imageChange: false,
+    podcast,
+    publish,
+    selectedItems: tag,
   });
 
   async function onSubmit(onUploadProgress) {
     var formData = new FormData();
-    var { title, description, authorId, image, selectedItems, audio } = form;
+    var {
+      _id,
+      title,
+      description,
+      authorId,
+      image_source,
+      selectedItems,
+      audio_source,
+      audioChange,
+      imageChange,
+      audio_key,
+      image_key,
+    } = form;
 
+    formData.append("_id", _id);
     formData.append("author", authorId);
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("album", albumId);
+
+    formData.append("image_source", image_source);
+    formData.append("audio_source", audio_source);
+
+    formData.append("audio_key", audio_key);
+    formData.append("image_key", image_key);
+
+    formData.append("audioChange", audioChange);
+    formData.append("imageChange", imageChange);
+
     formData.append("tags", JSON.stringify(selectedItems));
 
-    formData.append("thumb", {
-      uri: image,
-      name: `${title}`,
-      type: `image/${image.substring(image.lastIndexOf(".") + 1)}`,
-    });
-    formData.append("audio", {
-      uri: audio.uri,
-      name: `${"audio" + title}`,
-      // type: `audio/${audio.name.substring(image.lastIndexOf(".") + 1)}`,
-      type: `audio/mpeg`,
-    });
-    console.log(formData);
+    if (imageChange) {
+      formData.append("thumb", {
+        uri: image_source,
+        name: `${title}`,
+        type: `image/${image_source.substring(
+          image_source.lastIndexOf(".") + 1
+        )}`,
+      });
+    }
+    if (audioChange) {
+      formData.append("audio", {
+        uri: audio_source.uri,
+        name: `${"audio" + title}`,
+        type: `audio/mpeg`,
+      });
+    }
 
     try {
-      await api.post("/upload/podcast", formData, {
+      await api.put("/upload/podcast/update", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -82,7 +125,7 @@ export function NewPodcastScreen({ route }) {
       <Layout style={{ flex: 1 }}>
         <TopNavigation
           accessoryLeft={BackAction}
-          title="Criar novo podcast"
+          title="Editar podcast"
           alignment="center"
         />
         <Form form={form} setForm={setForm} onSubmit={onSubmit} />

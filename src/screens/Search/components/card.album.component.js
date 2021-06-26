@@ -10,11 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 
 import { Icon, Text, Button } from "@ui-kitten/components";
-import Constants from "expo-constants";
-
-import { addToTop } from "actions/playlist";
-import { reset } from "actions/controller";
-import { unloadPlayback } from "actions/playback";
 
 var width = Dimensions.get("window").width;
 
@@ -22,62 +17,16 @@ const DownloadIcon = (props) => (
   <Icon {...props} name="cloud-download-outline" />
 );
 
-export const Card = ({ title, description, imageSource, podcast, tags }) => {
+export const CardAlbum = ({
+  _id,
+  title,
+  description,
+  image_source,
+  podcasts,
+  author,
+}) => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const playback = useSelector((state) => state.playback);
-  var colors = [
-    "#38DBA6",
-    "#02C497",
-    "#01A891",
-    "#018D87",
-    "#006B71",
-    "#004F5E",
-    "#B3D83C",
-    "#8EBF07",
-    "#75A405",
-    "#5E8903",
-    "#486E02",
-    "#395B01",
-    "#4B9AFF",
-    "#0F6FFF",
-    "#0A55DB",
-    "#073FB7",
-    "#042C93",
-    "#021F7A",
-    "#FFD63F",
-    "#FFC300",
-    "#DBA200",
-    "#B78300",
-    "#936600",
-    "#7A5100",
-    "#FF677A",
-    "#FF3561",
-    "#DB265F",
-    "#B71A5A",
-    "#931053",
-    "#7A0A4D",
-  ];
-
-  async function handleAddToPlaylist() {
-    if (playback.sound != null) {
-      await playback.sound.unloadAsync();
-    }
-
-    dispatch(reset()); // controller reset
-    dispatch(unloadPlayback());
-    dispatch(addToTop(podcast));
-  }
-
-  function Tags({ tag }) {
-    // const colorIndex = Math.floor(Math.random() * colors.length);
-    // const color = colors[colorIndex];
-    // colors.splice(colorIndex, 1);
-
-    const color = colors[colorIndex];
-    colors.splice(colorIndex, 1);
-  }
-  console.log("Card", tags);
 
   return (
     <View style={styles.content}>
@@ -85,11 +34,20 @@ export const Card = ({ title, description, imageSource, podcast, tags }) => {
         style={styles.image_container}
         activeOpacity={0.6}
         underlayColor="#DDDDDD"
-        onPress={handleAddToPlaylist}
+        onPress={() => {
+          navigation.navigate("AlbumDetails", {
+            _id,
+            title,
+            description,
+            author,
+            image_source,
+            podcasts,
+          });
+        }}
       >
         <Image
           source={{
-            uri: imageSource,
+            uri: image_source,
           }}
           style={styles.thumb}
         />
@@ -147,3 +105,22 @@ const styles = StyleSheet.create({
     width: width - width * 0.5,
   },
 });
+
+// const styles = StyleSheet.create({
+//   container: {
+//     height: "auto",
+//     marginVertical: 5,
+//     flex: 1,
+//     flexDirection: "row",
+//     zIndex: 1000,
+//   },
+//   thumb: {
+//     width: 90,
+//     height: 90,
+//     marginRight: 10,
+//   },
+//   thumb_text: {
+//     fontWeight: "700",
+//     width: width - 125,
+//   },
+// });

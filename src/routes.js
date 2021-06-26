@@ -34,6 +34,8 @@ import { EditAlbumScreen } from "src/screens/Creators/Album/edit.album";
 import { AlbumPodcastEditScreen } from "src/screens/Creators/Podcast/list.album.podcasts";
 import { NewPodcastScreen } from "src/screens/Creators/Podcast/new.podcast";
 
+import { EditPodcastScreen } from "src/screens/Creators/Podcast/edit.podcast";
+
 import { ConfigurationScreen } from "screens/Profile/Configuration";
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -116,6 +118,13 @@ function RootStackScreen() {
         component={NewPodcastScreen}
         options={{ headerShown: false }}
       />
+
+      <RootStack.Screen
+        name="EditPodcast"
+        component={EditPodcastScreen}
+        options={{ headerShown: false }}
+      />
+
       <RootStack.Screen
         name="AlbumPodcastEdit"
         component={AlbumPodcastEditScreen}

@@ -36,9 +36,15 @@ export const AlbumPodcastList = ({ albumId, podcasts }) => {
           {podcasts.map((podcast, index) => (
             <View key={index}>
               <Card
+                _id={podcast._id}
                 title={podcast.title}
                 description={podcast.description}
-                imageSource={podcast.image_source}
+                audio_source={podcast.audio_source}
+                audio_key={podcast.audio_key}
+                image_key={podcast.image_key}
+                tag={podcast.tag}
+                image_source={podcast.image_source}
+                publish={podcast.publish}
                 podcast={podcast}
               />
               <Divider />

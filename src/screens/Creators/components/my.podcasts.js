@@ -26,7 +26,7 @@ const EditIcon = (props) => <Icon {...props} name="edit-outline" />;
 const TrashIcon = (props) => <Icon {...props} name="trash-outline" />;
 const PodcastIcon = (props) => <Icon {...props} name="headphones-outline" />;
 
-export const MyPocasts = ({ albums, getAlbums }) => {
+export const MyPodcasts = ({ albums, getAlbums }) => {
   const navigation = useNavigation();
 
   async function onChangeToggle(_id, publish) {

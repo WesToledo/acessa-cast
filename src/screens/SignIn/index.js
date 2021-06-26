@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,6 +14,7 @@ import {
   Layout,
   Text,
   Input,
+  Spinner,
   Icon,
 } from "@ui-kitten/components";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,9 +24,15 @@ import api from "src/services/api";
 
 const AlertIcon = (props) => <Icon {...props} name="alert-circle-outline" />;
 
-const avatarImg = require("src/assets/thumb.jpg");
+const avatarImg = require("src/assets/thumb_white.png");
 
 var width = Dimensions.get("window").width;
+
+const LoadingIndicator = (props) => (
+  <View style={[props.style, styles.indicator]}>
+    <Spinner size="small" status="basic" />
+  </View>
+);
 
 export const SignInScreen = ({ navigation }) => {
   const [form, setForm] = React.useState({
@@ -33,6 +40,7 @@ export const SignInScreen = ({ navigation }) => {
     password: null,
   });
   const [secureTextEntry, setSecureTextEntry] = React.useState(true);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -59,6 +67,7 @@ export const SignInScreen = ({ navigation }) => {
   };
 
   async function handleSubmit() {
+    setLoading(true);
     try {
       const response = await api.post("/login", {
         email: form.email,
@@ -71,6 +80,7 @@ export const SignInScreen = ({ navigation }) => {
         })
       );
     } catch (err) {
+      setLoading(false);
       console.log("ERRO AO LOGAR", err);
     }
   }
@@ -116,9 +126,18 @@ export const SignInScreen = ({ navigation }) => {
             >
               Novo por aqui? Crie sua conta
             </Text>
-            <Button style={styles.button} size="medium" onPress={handleSubmit}>
-              Entrar
-            </Button>
+
+            {!loading ? (
+              <Button
+                style={styles.button}
+                size="medium"
+                onPress={handleSubmit}
+              >
+                Entrar
+              </Button>
+            ) : (
+              <Button style={styles.button} accessoryLeft={LoadingIndicator} />
+            )}
           </View>
         </KeyboardAvoidingView>
       </Layout>
@@ -185,5 +204,8 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 15,
     // marginBottom: 15,
+  },
+  spinner: {
+    marginVertical: 5,
   },
 });

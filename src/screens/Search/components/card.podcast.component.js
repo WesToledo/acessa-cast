@@ -22,7 +22,13 @@ const DownloadIcon = (props) => (
   <Icon {...props} name="cloud-download-outline" />
 );
 
-export const Card = ({ title, description, imageSource, podcast, tags }) => {
+export const CardPodcast = ({
+  title,
+  description,
+  image_source,
+  podcast,
+  tags,
+}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const playback = useSelector((state) => state.playback);
@@ -69,11 +75,8 @@ export const Card = ({ title, description, imageSource, podcast, tags }) => {
     dispatch(addToTop(podcast));
   }
 
-  function Tags({ tag }) {
-    // const colorIndex = Math.floor(Math.random() * colors.length);
-    // const color = colors[colorIndex];
-    // colors.splice(colorIndex, 1);
-
+  function Tags() {
+    const colorIndex = Math.floor(Math.random() * colors.length);
     const color = colors[colorIndex];
     colors.splice(colorIndex, 1);
   }
@@ -89,7 +92,7 @@ export const Card = ({ title, description, imageSource, podcast, tags }) => {
       >
         <Image
           source={{
-            uri: imageSource,
+            uri: image_source,
           }}
           style={styles.thumb}
         />
@@ -147,3 +150,22 @@ const styles = StyleSheet.create({
     width: width - width * 0.5,
   },
 });
+
+// const styles = StyleSheet.create({
+//   container: {
+//     height: "auto",
+//     marginVertical: 5,
+//     flex: 1,
+//     flexDirection: "row",
+//     zIndex: 1000,
+//   },
+//   thumb: {
+//     width: 90,
+//     height: 90,
+//     marginRight: 10,
+//   },
+//   thumb_text: {
+//     fontWeight: "700",
+//     width: width - 125,
+//   },
+// });

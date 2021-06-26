@@ -8,7 +8,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#02C497"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,13 +21,14 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.acessa_cast_app.acessacast"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "SERVER_URL": "https://28b2a0792f21.ngrok.io"
+      "SERVER_URL": "https://3895a5cb4a8a.ngrok.io"
     }
   }
 }

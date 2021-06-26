@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Icon, Text, Button } from "@ui-kitten/components";
 
-import img from "../../../assets/thumb.jpg";
+import img from "../../../assets/thumb.png";
 
 var width = Dimensions.get("window").width;
 

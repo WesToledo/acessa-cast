@@ -22,7 +22,7 @@ import {
 import { instancePlayback, unloadPlayback } from "actions/playback";
 import { nextMusic as playlistNextMusic } from "actions/playlist";
 
-import img from "../../assets/thumb.jpg";
+import img from "../../assets/thumb.png";
 var width = Dimensions.get("window").width;
 
 export function TrackPlayer({}) {
@@ -33,7 +33,8 @@ export function TrackPlayer({}) {
   const playlist = useSelector((state) => state.playlist);
   const playback = useSelector((state) => state.playback);
 
-  const { title, author } = playlist.podcasts[playlist.currentIndex];
+  const { title, author, description } =
+    playlist.podcasts[playlist.currentIndex];
 
   async function handlePlayPause() {
     if (!controller.isPlaying) {
@@ -46,6 +47,7 @@ export function TrackPlayer({}) {
 
   async function loadAudio({ fromStart, shouldPlay = true }) {
     const { isPlaying, volume } = controller;
+    console.log("AUDIO", playlist.podcasts[playlist.currentIndex]);
 
     dispatch(setLoading());
 
@@ -55,10 +57,7 @@ export function TrackPlayer({}) {
 
     try {
       const source = {
-        uri:
-          Constants.manifest.extra.SERVER_URL +
-          "/ftp/" +
-          playlist.podcasts[playlist.currentIndex].uri,
+        uri: playlist.podcasts[playlist.currentIndex].audio_source,
       };
       const initialStatus = {
         shouldPlay: shouldPlay ? isPlaying : false,
@@ -135,7 +134,12 @@ export function TrackPlayer({}) {
               underlayColor="#0a0a0a"
               onPress={() => navigation.navigate("Details")}
             >
-              <Image source={img} style={styles.image} />
+              <Image
+                source={{
+                  uri: playlist.podcasts[playlist.currentIndex].image_source,
+                }}
+                style={styles.image}
+              />
             </TouchableHighlight>
           </Layout>
           <Layout style={styles.content} level="2">
@@ -148,7 +152,7 @@ export function TrackPlayer({}) {
                 appearance="hint"
                 style={{ fontWeight: "bold" }}
               >
-                {author.name}
+                {description}
               </Text>
             </Layout>
             {!controller.isPlaying ? (

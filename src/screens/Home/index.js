@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView, StyleSheet, ScrollView, Dimensions } from "react-native";
 import Constants from "expo-constants";
 import {
   Layout,
@@ -12,6 +12,8 @@ import {
 import { Section } from "./components/section.component";
 import api from "src/services/api";
 import { useNavigation } from "@react-navigation/core";
+
+var height = Dimensions.get("window").height;
 
 const PlaylistIcon = (props) => <Icon {...props} name="layers-outline" />;
 
@@ -68,8 +70,7 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
   },
   spinner: {
-    height: "100%",
-    flex: 1,
+    height: height - 180,
     justifyContent: "center",
     alignItems: "center",
   },

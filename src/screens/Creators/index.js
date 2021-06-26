@@ -14,7 +14,8 @@ import Constants from "expo-constants";
 
 import api from "src/services/api";
 
-import { MyPocasts } from "./components/my.podcasts";
+import { MyPodcasts as MyPodcasts } from "./components/my.podcasts";
+import { useSelector } from "react-redux";
 
 const NewIcon = (props) => <Icon {...props} name="plus-outline" />;
 
@@ -23,12 +24,13 @@ var height = Dimensions.get("window").height;
 export function CreatorsScreen({ route }) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const authorId = useSelector((state) => state.auth.user._id);
 
   const [albums, setAlbums] = useState([]);
 
   async function getAlbums() {
     try {
-      const { data } = await api.get("/album/");
+      const { data } = await api.get("/album/my/" + authorId);
       if (data.albums.length != 0) setAlbums(data.albums);
       else setAlbums(null);
     } catch (err) {
@@ -66,7 +68,7 @@ export function CreatorsScreen({ route }) {
         {albums != null ? (
           <ScrollView>
             {albums.length != 0 ? (
-              <MyPocasts albums={albums} getAlbums={getAlbums} />
+              <MyPodcasts albums={albums} getAlbums={getAlbums} />
             ) : (
               <Layout style={styles.spinner}>
                 <Spinner size="giant" />

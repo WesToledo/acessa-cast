@@ -28,7 +28,9 @@ export function TrackDetailsScreen({ navigation }) {
 
   const controller = useSelector((state) => state.controller);
   const playback = useSelector((state) => state.playback);
-  const playlist = useSelector((state) => state.playlist);
+  const { podcasts, currentIndex } = useSelector((state) => state.playlist);
+
+  const { title, author, description, image_source } = podcasts[currentIndex];
 
   async function onSeek(time) {
     time = Math.round(time);
@@ -44,10 +46,10 @@ export function TrackDetailsScreen({ navigation }) {
     <SafeAreaView style={styles.safeArea}>
       <Layout style={styles.container}>
         <Header />
-        <AlbumArt />
+        <AlbumArt image={image_source} />
         {!controller.loading ? (
           <View style={styles.footer}>
-            <TrackDetails />
+            <TrackDetails title={title} description={description} />
 
             <SeekBar
               trackLength={controller.trackLength}

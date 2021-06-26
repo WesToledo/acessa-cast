@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Image, ScrollView, View } from "react-native";
 import { Divider, Layout, Text } from "@ui-kitten/components";
 
-import { Card } from "./card.components";
+import { Card } from "./card.component";
 
 export const ListCards = ({ navigation, podcasts = [] }) => {
   return (

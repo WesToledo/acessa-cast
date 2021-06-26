@@ -3,14 +3,14 @@ import { StyleSheet } from "react-native";
 
 import { Layout, Text } from "@ui-kitten/components";
 
-export const TrackDetails = ({ name, description }) => {
+export const TrackDetails = ({ title, description }) => {
   return (
     <Layout style={styles.track_details}>
       <Text style={{ fontWeight: "bold" }} category="h4">
-        Nerd Cast #300
+        {title}
       </Text>
       <Text category="h6" style={{ fontWeight: "bold" }} appearance="hint">
-        Nerdacst
+        {description}
       </Text>
     </Layout>
   );

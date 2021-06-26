@@ -4,16 +4,14 @@ import Constants from "expo-constants";
 
 var width = Dimensions.get("window").width;
 
-import img from "../../assets/thumb.jpg";
+import img from "../../assets/thumb.png";
 
-export const AlbumArt = () => {
+export const AlbumArt = ({ image }) => {
   return (
     <View style={styles.album_art}>
       <Image
         source={{
-          uri:
-            Constants.manifest.extra.SERVER_URL +
-            "/ftp/public/uploads/image-not-found.jpg1621890592298.jpg",
+          uri: image,
         }}
         style={styles.image}
       />

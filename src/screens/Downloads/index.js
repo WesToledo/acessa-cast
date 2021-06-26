@@ -8,7 +8,7 @@ import {
   Text,
 } from "@ui-kitten/components";
 
-import { ListCards } from "./components/list.cards.components";
+import { ListCards } from "./components/list.cards.component";
 
 export const DownloadsScreen = ({ navigation }) => {
   var podcasts = [

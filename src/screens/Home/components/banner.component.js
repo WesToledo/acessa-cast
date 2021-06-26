@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Image, ScrollView } from "react-native";
 import { Layout, Text } from "@ui-kitten/components";
 
-import img from "../../assets/thumb.jpg";
+import img from "../../assets/thumb.png";
 
 export const Section = ({ navigation, title, podcasts }) => {
   return (

@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Layout, Text } from "@ui-kitten/components";
 import Constants from "expo-constants";
 
-import img from "../../../assets/thumb.jpg";
+import img from "../../../assets/thumb.png";
 
 export const Section = ({ title, albums }) => {
   const navigation = useNavigation();
@@ -45,10 +45,7 @@ export const Section = ({ title, albums }) => {
               >
                 <Image
                   source={{
-                    uri:
-                      Constants.manifest.extra.SERVER_URL +
-                      "/ftp/" +
-                      image_source,
+                    uri: image_source,
                   }}
                   style={styles.thumb}
                 />
