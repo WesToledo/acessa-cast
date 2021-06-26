@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Dimensions } from "react-native";
 import {
   Icon,
@@ -10,8 +10,12 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 
+import api from "src/services/api";
+
 import { AlbumDetails } from "./components/album.details.component";
 import { AlbumPodcastList } from "./components/podcast.list.component";
+
+import { ModalDelete } from "../components/modal.component";
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 const BackAction = () => {
@@ -35,6 +39,19 @@ export const AlbumPodcastEditScreen = ({ route, navigation }) => {
     knowledge_area,
     key,
   } = route.params;
+
+  const [modalVisibility, setModalVisibility] = useState(false);
+
+  async function onDelete() {
+    try {
+      await api.delete("/album/remove/" + _id);
+      navigation.navigate("Creators", {
+        shouldRefresh: true,
+      });
+    } catch (err) {
+      console.log("erro", err);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -60,11 +77,7 @@ export const AlbumPodcastEditScreen = ({ route, navigation }) => {
             />
             <TopNavigationAction
               icon={TrashIcon}
-              onPress={() =>
-                navigation.navigate("DeleteAlbum", {
-                  _id,
-                })
-              }
+              onPress={() => setModalVisibility(true)}
             />
           </Layout>
         )}
@@ -78,6 +91,15 @@ export const AlbumPodcastEditScreen = ({ route, navigation }) => {
         />
         <AlbumPodcastList podcasts={podcasts} albumId={_id} />
       </Layout>
+      {modalVisibility && (
+        <ModalDelete
+          title="Deletar Álbum"
+          text="Você tem certeza que deseja excluir este álbum?"
+          onDelete={onDelete}
+          modalVisibility={modalVisibility}
+          setModalVisibility={setModalVisibility}
+        />
+      )}
     </SafeAreaView>
   );
 };

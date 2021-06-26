@@ -46,6 +46,7 @@ export const AlbumPodcastList = ({ albumId, podcasts }) => {
                 image_source={podcast.image_source}
                 publish={podcast.publish}
                 podcast={podcast}
+                albumId={albumId}
               />
               <Divider />
             </View>

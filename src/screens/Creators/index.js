@@ -77,7 +77,9 @@ export function CreatorsScreen({ route }) {
           </ScrollView>
         ) : (
           <Layout>
-            <Text>Você não tem nenhum album publicado ainda</Text>
+            <Text style={styles.sub_title}>
+              Você não tem nenhum album publicado ainda
+            </Text>
           </Layout>
         )}
       </Layout>
@@ -93,6 +95,9 @@ const styles = StyleSheet.create({
   title: {
     marginLeft: 15,
     fontWeight: "bold",
+  },
+  sub_title: {
+    margin: 15,
   },
   spinner: {
     flex: 1,

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import { useSelector } from "react-redux";
 import Constants from "expo-constants";
 import {
   Layout,
@@ -8,12 +9,12 @@ import {
   Icon,
   Spinner,
 } from "@ui-kitten/components";
-
-import api from "src/services/api";
 import { useNavigation } from "@react-navigation/core";
 
+import api from "src/services/api";
+
 import Form from "./form.edit.component";
-import { useSelector } from "react-redux";
+import { ModalDelete } from "../components/modal.component";
 
 const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
 const BackAction = () => {
@@ -23,9 +24,13 @@ const BackAction = () => {
   );
 };
 
+const TrashIcon = (props) => <Icon {...props} name="trash-outline" />;
+
 export function EditPodcastScreen({ route }) {
   const navigation = useNavigation();
   const { user } = useSelector((state) => state.auth);
+
+  const [modalVisibility, setModalVisibility] = useState(false);
 
   const {
     _id,
@@ -39,6 +44,8 @@ export function EditPodcastScreen({ route }) {
     podcast,
     publish,
   } = route.params.podcast;
+
+  const { albumId } = route.params;
 
   const [form, setForm] = useState({
     authorId: user._id,
@@ -120,16 +127,46 @@ export function EditPodcastScreen({ route }) {
     }
   }
 
+  async function onDelete() {
+    try {
+      await api.delete("/podcast/remove/" + _id + "/" + albumId);
+      navigation.navigate("Creators", {
+        shouldRefresh: true,
+      });
+    } catch (err) {
+      console.log("erro", err);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Layout style={{ flex: 1 }}>
         <TopNavigation
-          accessoryLeft={BackAction}
-          title="Editar podcast"
+          title={"Editar Podcast"}
           alignment="center"
+          accessoryLeft={BackAction}
+          accessoryRight={() => (
+            <Layout style={{ flexDirection: "row", justifyContent: "center" }}>
+              <TopNavigationAction
+                icon={TrashIcon}
+                onPress={() => {
+                  setModalVisibility(true);
+                }}
+              />
+            </Layout>
+          )}
         />
         <Form form={form} setForm={setForm} onSubmit={onSubmit} />
       </Layout>
+      {modalVisibility && (
+        <ModalDelete
+          title="Deletar Podcast"
+          text="Você tem certeza que deseja excluir este podcast ?"
+          onDelete={onDelete}
+          modalVisibility={modalVisibility}
+          setModalVisibility={setModalVisibility}
+        />
+      )}
     </SafeAreaView>
   );
 }

@@ -11,7 +11,7 @@ import {
 
 import { Section } from "./components/section.component";
 import api from "src/services/api";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation, useIsFocused } from "@react-navigation/core";
 
 var height = Dimensions.get("window").height;
 
@@ -19,19 +19,25 @@ const PlaylistIcon = (props) => <Icon {...props} name="layers-outline" />;
 
 export const HomeScreen = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const [albums, setAlbums] = useState([]);
 
+  async function getAlbums() {
+    try {
+      const { data } = await api.get("/album/");
+      setAlbums(data.albums);
+    } catch (err) {}
+  }
   useEffect(() => {
-    async function getAlbums() {
-      try {
-        const { data } = await api.get("/album/");
-        console.log(data.albums);
-        setAlbums(data.albums);
-      } catch (err) {}
-    }
     getAlbums();
   }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      getAlbums();
+    }
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={styles.safeArea}>

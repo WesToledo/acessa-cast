@@ -79,14 +79,7 @@ export function NewPodcastScreen({ route }) {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Layout style={{ flex: 1 }}>
-        <TopNavigation
-          accessoryLeft={BackAction}
-          title="Criar novo podcast"
-          alignment="center"
-        />
-        <Form form={form} setForm={setForm} onSubmit={onSubmit} />
-      </Layout>
+      <Form form={form} setForm={setForm} onSubmit={onSubmit} />
     </SafeAreaView>
   );
 }

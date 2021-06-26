@@ -13,6 +13,8 @@ import { Icon, Text, Button, Toggle } from "@ui-kitten/components";
 
 import Constants from "expo-constants";
 
+import api from "src/services/api";
+
 var width = Dimensions.get("window").width;
 
 const DownloadIcon = (props) => (
@@ -30,6 +32,7 @@ export const Card = ({
   image_source,
   podcast,
   publish: publishState,
+  albumId,
 }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -39,7 +42,6 @@ export const Card = ({
   async function onChangeToggle(_id, publish) {
     try {
       await api.put("/podcast/publish/" + _id, { publish: !publish });
-      getAlbums();
     } catch (err) {
       console.log("erro", err);
     }
@@ -52,7 +54,9 @@ export const Card = ({
           style={styles.image_container}
           activeOpacity={0.6}
           underlayColor="#DDDDDD"
-          onPress={() => navigation.navigate("EditPodcast", { podcast })}
+          onPress={() =>
+            navigation.navigate("EditPodcast", { podcast, albumId })
+          }
         >
           <Image
             source={{

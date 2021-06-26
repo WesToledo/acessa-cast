@@ -39,8 +39,6 @@ export function EditAlbumScreen({ route }) {
     selectedItems: [knowledge_area],
   });
 
-  console.log(form.selectedItems);
-
   async function onSubmit(onUploadProgress) {
     onUploadProgress({ loaded: 50, total: 100 });
 
@@ -77,7 +75,7 @@ export function EditAlbumScreen({ route }) {
           form={form}
           setForm={setForm}
           onSubmit={onSubmit}
-          submitText="Confirmar Edição"
+          submitText="Salvar Alterações"
         />
       </Layout>
     </SafeAreaView>
